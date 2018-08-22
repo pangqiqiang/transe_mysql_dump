@@ -24,3 +24,15 @@ class MyDB:
         res = self.db.get(sql, origin_id)
         res = res.id if res else None
         return res
+
+    def get_max_id(self):
+        sql = "SELECT MAX(id) id FROM " + self.tablename
+        res = self.db.get(sql)
+        res = res.id if res else 0
+        return res
+
+    def get_max_uid(self):
+        sql = "SELECT MAX(uid) uid FROM " + self.tablename
+        res = self.db.get(sql)
+        res = res.uid if res else 0
+        return res

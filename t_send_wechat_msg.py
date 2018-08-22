@@ -2,7 +2,7 @@
 #-*-coding:utf-8-*-
 
 import threading
-import re
+import iter_gmatch
 import torndb_handler
 import os
 
@@ -16,7 +16,12 @@ SEP = os.linesep
 MYDB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
                            database="dts_jjd", user="dev",
                            password="KRkFcVCbopZbS8R7",
-                           tablename="user_passpord")
+                           tablename="user_passport")
+
+mutex = threading.Lock()
+threads = []
+valid = 'INSERT'
+gmatch = iter_gmatch.gmatch
 
 
 class myThread(threading.Thread):
@@ -31,37 +36,29 @@ class myThread(threading.Thread):
 
 def conver_file(input_file, output_file, valid, pattern):
     with open(input_file, 'r') as fin:
-        with open(output_file, 'w') as fout:
+        with open(output_file, 'a') as fout:
             for line in fin:
-                print(line)
-                if not valid.search(line):
+                if not line.startswith(valid):
                     continue
                 line.rstrip()
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1)]
-                m = pattern.findall(post)
-                if m:
-                    new_values = []
-                    for item in m:
-                        temp_arr = item.split(",")
-                        salt = temp_arr[0]
-                        new_id = MYDB.fetch_id(salt)
-                        print(new_id)
-                        temp_arr.insert(0, new_id)
-                        new_values.append(",".join(temp_arr))
-                    post = ",".join(new_values)
+                pre = line[:(pre_pos + 1 + len("VALUES"))]
+                new_values = []
+                for item in gmatch(line, "(", ")", pre_pos):
+                    temp_arr = item.split(",")
+                    salt = salt = temp_arr[0].lstrip("(")
+                    new_id = MYDB.fetch_id(salt.replace("'", ""))
+                    # print(new_id)
+                    temp_arr.insert(0, "(" + "'" + str(new_id) + "'")
+                    new_values.append(",".join(temp_arr))
+                post = ",".join(new_values)
                 mutex.acquire()
                 fout.write(pre + " " + post + SEP)
                 mutex.release()
 
-
-mutex = threading.Lock()
-threads = []
-valid = r'INSERT INTO'
-pattern = r'\(.+\)'
 
 thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE, valid, pattern))
 thread1 = myThread(conver_file, (INPUT_FILE1, OUTPUT_FILE, valid, pattern))

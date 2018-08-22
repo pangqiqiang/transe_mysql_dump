@@ -6,4 +6,5 @@ MYDB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:330
                            tablename="user_passport")
 
 
-print(MYDB.fetch_from_salt("201611210122113267"))
+print(MYDB.fetch_from_salt("201712150135062978"))
+print(MYDB.get_max_uid())

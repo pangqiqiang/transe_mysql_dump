@@ -13,6 +13,9 @@ MYDB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:330
                            password="KRkFcVCbopZbS8R7",
                            tablename="loan_installment_list")
 
+gmatch = iter_gmatch.gmatch
+valid = "INSERT"
+
 
 def conver_file(input_file, output_file, valid):
     with open(input_file, 'r') as fin:
@@ -35,20 +38,18 @@ def conver_file(input_file, output_file, valid):
                     new_id = MYDB.fetch_from_origin_id(
                         origin_id.replace("'", ""))
                     # mutex.release()
-                    temp_arr[2] = str(int(float(temp_arr[2]) * 100))
-                    temp_arr[3] = str(int(float(temp_arr[3]) * 100))
+                    temp_arr[2] = int(float(temp_arr[2]) * 100)
+                    temp_arr[3] = int(float(temp_arr[3]) * 100)
                     del temp_arr[1]
-                    temp_arr.insert(0, "(" + str(new_id))
+                    temp_arr.insert(0, "(" + "'" + str(new_id) + "'")
                     temp_arr[1] = origin_id
                     temp_arr[-1] = temp_arr[-1].rstrip(")")
-                    temp_arr.append("'0')")
+                    temp_arr.append("b'0')")
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)
                 fout.write(pre + " " + post + SEP)
 
 
-gmatch = iter_gmatch.gmatch
-valid = "INSERT"
 start_time = time.clock()
 conver_file("t_iou_overdue_list_to_us.sql",
             "/tmp/t_iou_overdue_list_to_us_out.sql", valid)
