@@ -5,6 +5,7 @@ import threading
 import iter_gmatch
 import torndb_handler
 import os
+import common_dbs
 
 OUTPUT_FILE = "/tmp/user_wechat_msg_out.sql"
 INPUT_FILE0 = "t_send_wechat_msg00"
@@ -13,10 +14,12 @@ INPUT_FILE2 = "t_send_wechat_msg02"
 INPUT_FILE3 = "t_send_wechat_msg03"
 INPUT_FILE4 = "t_send_wechat_msg04"
 SEP = os.linesep
-MYDB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                           database="dts_jjd", user="dev",
-                           password="KRkFcVCbopZbS8R7",
-                           tablename="user_passport")
+# 导入数据库类,用多个实例防止线程竞争，限制速度
+MYDB0 = common_dbs.USER_PASSPORT_DB
+MYDB1 = common_dbs.USER_PASSPORT_DB
+MYDB2 = common_dbs.USER_PASSPORT_DB
+MYDB3 = common_dbs.USER_PASSPORT_DB
+MYDB4 = common_dbs.USER_PASSPORT_DB
 
 mutex = threading.Lock()
 threads = []
@@ -34,7 +37,8 @@ class myThread(threading.Thread):
         self.func(*self.args)
 
 
-def conver_file(input_file, output_file, valid, pattern):
+def conver_file(input_file, output_file, valid, mydb):
+    global mutex
     with open(input_file, 'r') as fin:
         with open(output_file, 'a') as fout:
             for line in fin:

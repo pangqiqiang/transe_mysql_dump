@@ -5,17 +5,16 @@ import torndb_handler
 import os
 import time
 import iter_gmatch
+import common_dbs
+from common_func import *
 
 SEP = os.linesep
 
-
-LOAN_INSTALLMENT_LIST_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                               database="dts_jjd", user="dev",
-                                               password="KRkFcVCbopZbS8R7",
-                                               tablename="loan_installment_list")
+LOAN_DB = common_dbs.LOAN_DB
 
 
 def conver_file(input_file, output_file, valid):
+    seq_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -26,30 +25,36 @@ def conver_file(input_file, output_file, valid):
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))]
+                pre = line[:(pre_pos + 1)]
                 new_values = []
                 for item in gmatch(line, ",(", "),", pre_pos):
-                    # print(item)
+
+                    seq_count += 1
                     item = item.strip(",")
                     temp_arr = item.split(",")
-                    c_iou_installment_list_id = temp_arr[1]
-                    # loan_installment_list_id
-                    temp_arr[0] = LOAN_INSTALLMENT_LIST_DB.fetch_from_origin_id(
-                        c_iou_installment_list_id)
-                    # amount
-                    temp_arr[2] *= 100
-                    #处理del
+                    c_iou_id = temp_arr[3]
+                    # print(salt)
+                    id = LOAN_DB.fetch_from_origin_id(
+                        c_iou_id.replace("'", ""))
+                    temp_arr[2] = id
+                    n_faimily_member = temp_arr[8]
+                    try:
+                        faimily_member = int(n_faimily_member)
+                    except ValueError:
+                        faimily_member = 0
+                    temp_arr[7] = faimily_member
                     new_values.append(",".join(temp_arr))
                     # print(",".join(temp_arr))
                 post = ",".join(new_values)
                 fout.write(pre + " " + post + SEP)
 
 
-gmatch = iter_gmatch.gmatch
 valid = "INSERT"
+gmatch = iter_gmatch.gmatch
+
 start_time = time.clock()
-conver_file("loan_overdue_forfeit_list_offline.sql",
-            "/tmp/loan_overdue_forfeit_list_offline_out.sql", valid)
+conver_file("collection_return_info.sql",
+            "/tmp/collection_return_info_out.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

@@ -5,68 +5,23 @@ import torndb_handler
 import os
 import time
 import iter_gmatch
+from common_func import *
+import common_dbs
 
 
 SEP = os.linesep
-PASSWORD_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                  database="dts_jjd", user="dev",
-                                  password="KRkFcVCbopZbS8R7",
-                                  tablename="user_passport")
-
-TRADE_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                               database="dts_jjd", user="dev",
-                               password="KRkFcVCbopZbS8R7",
-                               tablename="trade")
-
-LOAN_OFFLINE_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                      database="dts_jjd", user="dev",
-                                      password="KRkFcVCbopZbS8R7",
-                                      tablename="loan_offline")
-
-PRODUCT_BID_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                     database="dts_jjd", user="dev",
-                                     password="KRkFcVCbopZbS8R7",
-                                     tablename="product_bid")
-
-BID_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                             database="dts_jjd", user="dev",
-                             password="KRkFcVCbopZbS8R7",
-                             tablename="bid")
-
+#导入数据库类
+PASSWORD_DB = common_dbs.USER_PASSPORT_DB
+TRADE_DB = common_dbs.TRADE_DB
+LOAN_OFFLINE_DB = common_dbs.LOAN_OFFLINE_DB
+PRODUCT_BID_DB = common_dbs.PRODUCT_BID_DB
+BID_DB = common_dbs.BID_DB
 
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
                     "创业": 3, "租房": 4, "旅游": 5, "装修": 6, "医疗": 7}
 
-
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
-
-
-def float_char_to_int(str):
-    try:
-        str = str.strip("'")
-        res = int(float(str) * 100)
-    except ValueError:
-        res = 0
-    return res
-
-
-def date2int(date):
-    try:
-        date = date.strip("'")
-        time_arr = time.strptime(date, "%Y-%m-%d")
-        return int(time.mktime(time_arr))
-    except ValueError:
-        return 0
-
-
-def datetime2int(date):
-    try:
-        date = date.strip("'")
-        time_arr = time.strptime(date, "%Y-%m-%d %H:%M:%S")
-        return int(time.mktime(time_arr))
-    except ValueError:
-        return 0
 
 
 def conver_file(input_file, output_file, valid):

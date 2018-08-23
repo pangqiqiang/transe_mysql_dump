@@ -31,7 +31,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     # 维护主键
-    seq_count = 0
+    seq_count = 60
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -124,8 +124,8 @@ def conver_file(input_file, output_file, valid):
 
 
 start_time = time.clock()
-conver_file("t_iou_installment_list.sql",
-            "/tmp/loan_installment_list_out.sql", valid)
+conver_file("t_iou_installment_list_history.sql",
+            "/tmp/loan_installment_list_history_out.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

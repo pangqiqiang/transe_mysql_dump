@@ -5,13 +5,12 @@ import torndb_handler
 import os
 import time
 import iter_gmatch
+import common_dbs
 
 
 SEP = os.linesep
-MYDB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                           database="dts_jjd", user="dev",
-                           password="KRkFcVCbopZbS8R7",
-                           tablename="loan_installment_list")
+导入数据库类
+MYDB = common_dbs.LOAN_INSTALLMENT_LIST_DB
 
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
