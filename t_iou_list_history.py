@@ -70,7 +70,7 @@ def conver_file(input_file, output_file, valid):
                             output_arr[i + 1])
                     # trade_id(c_trade_id)
                     output_arr[19] = input_arr[9]
-                    output_arr[18] = LOAN_WRITE_OFF_DB.fetch_from_origin_id(
+                    output_arr[18] = TRADE_DB.fetch_from_origin_id(
                         output_arr[19].strip("'"))
                     # repayer_type
                     # c_user_id=(c_borrower_id)type=1
@@ -103,7 +103,7 @@ def conver_file(input_file, output_file, valid):
                     try:
                         output_arr[31] = int(float(input_arr[19]) * 100 + 0.5)
                     except ValueError:
-                        output_arr[30] = input_arr[18]
+                        output_arr[30] = input_arr[19]
                     # online_status
                     output_arr[32] = input_arr[21]
                     # offline_pay_method(c_offline_pay_method)
@@ -116,18 +116,18 @@ def conver_file(input_file, output_file, valid):
                     output_arr[35] = input_arr[20]
                     # receive_time(t_rcv_tm)
                     output_arr[38] = input_arr[27]
-                    output_arr[37] = datetime2timestam(output_arr[38])
+                    output_arr[37] = datetime2int(output_arr[38])
                     # receive_status
                     output_arr[36] = "b'0'" if output_arr[38] == "NULL" else "b'1'"
                     # reconciliation_status
                     output_arr[39] = input_arr[23]
                     # reconciliation_time(t_reconciliation_tm)
                     output_arr[41] = input_arr[28].rstrip(")")
-                    output_arr[40] = datetime2timestam(output_arr[41])
+                    output_arr[40] = datetime2int(output_arr[41])
                     # extend_time_status
                     output_arr[42] = input_arr[24]
                     # create_time
-                    output_arr[43] = datetime2timestam(input_arr[26])
+                    output_arr[43] = datetime2timestamp(input_arr[26])
                     # update_time
                     output_arr[44] = str(output_arr[43]) + ")"
                     new_values.append(",".join([str(i) for i in output_arr]))

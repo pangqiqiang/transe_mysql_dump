@@ -60,7 +60,7 @@ def conver_file(input_file, output_file, valid, mydb):
                     # print(new_id)
                     temp_arr.insert(0, "(" + "'" + str(new_id) + "'")
                     temp_arr[1] = temp_arr[1].lstrip("(")
-                    temp_arr[-1] = datetime2timestam(temp_arr[-1].rstrip(")"))
+                    temp_arr[-1] = datetime2timestamp(temp_arr[-1].rstrip(")"))
                     temp_arr[-1] = str(temp_arr[-1]) + ")"
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)

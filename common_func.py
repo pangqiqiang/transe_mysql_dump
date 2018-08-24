@@ -23,6 +23,24 @@ def date2timestamp(date):
         return "NULL"
 
 
+def date2int(date):
+    try:
+        date = date.strip("'")
+        time_arr = time.strptime(date, "%Y-%m-%d")
+        return int(time.mktime(time_arr))
+    except ValueError:
+        return "NULL"
+
+
+def datetime2int(date):
+    try:
+        date = date.strip("'")
+        time_arr = time.strptime(date, "%Y-%m-%d %H:%M:%S")
+        return int(time.mktime(time_arr))
+    except ValueError:
+        return "NULL"
+
+
 def datetime2timestamp(date):
     try:
         date = date.strip("'")
@@ -36,3 +54,5 @@ def datetime2timestamp(date):
 if __name__ == "__main__":
     print(datetime2timestamp("'2018-08-25 12:20:00'"))
     print(date2timestamp("2018-08-25"))
+    print(date2int("2018-08-25"))
+    print(datetime2int("'2018-08-25 12:20:00'"))

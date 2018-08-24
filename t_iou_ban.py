@@ -10,14 +10,14 @@ import common_dbs
 
 
 SEP = os.linesep
-#导入数据库类
+# 导入数据库类
 PASSWORD_DB = common_dbs.USER_PASSPORT_DB
 TRADE_DB = common_dbs.TRADE_DB
 LOAN_OFFLINE_DB = common_dbs.LOAN_OFFLINE_DB
 PRODUCT_BID_DB = common_dbs.PRODUCT_BID_DB
 BID_DB = common_dbs.BID_DB
 LOAN_DB = common_dbs.LOAN_DB
-#存入jsonsql
+# 存入jsonsql
 JSON_PRE = "INSERT INTO TEMP_JSON VALUES "
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
                     "创业": 3, "租房": 4, "旅游": 5, "装修": 6, "医疗": 7}
@@ -28,7 +28,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, output_file2, valid):
     # 维护自增id
-    seq_count = 50
+    seq_count = 100
     json_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
@@ -140,12 +140,14 @@ def conver_file(input_file, output_file, output_file2, valid):
                         for i in range(43, 46):
                             out_arr[i] = input_arr[i - 10]
                         # create_time,[46]
-                        out_arr[46] = datetime2timestam(input_arr[36])
+                        out_arr[46] = datetime2timestamp(input_arr[36])
                         # update_time[47]
-                        out_arr[47] = str(datetime2timestam(
+                        out_arr[47] = str(datetime2timestamp(
                             input_arr[37].rstrip(")"))) + ")"
                         for i in range(38, len(input_arr)):
                             json_arr.append(input_arr[i])
+                        json_arr[-1] = json_arr[-1].strip(")")
+                        json_arr.append("NULL" + ")")
                         new_values.append(
                             ",".join([str(i) for i in out_arr]))
                         json_values.append(",".join(json_arr))

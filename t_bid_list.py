@@ -81,14 +81,14 @@ def conver_file(input_file, output_file, valid):
                     output_arr[17] = input_arr[10]
                     # receive_time(t_rcv_tm)
                     output_arr[19] = input_arr[14]
-                    output_arr[18] = datetime2timestam(output_arr[19])
+                    output_arr[18] = datetime2int(output_arr[19])
                     # reconciliation_status
                     output_arr[20] = input_arr[11]
                     # reconciliation_time(t_reconciliation_tm)
                     output_arr[22] = input_arr[15].rstrip(")")
-                    output_arr[21] = datetime2timestam(output_arr[22])
+                    output_arr[21] = datetime2timestamp(output_arr[22])
                     # create_time
-                    output_arr[23] = datetime2timestam(input_arr[13])
+                    output_arr[23] = datetime2timestamp(input_arr[13])
                     # update_time
                     output_arr[24] = str(output_arr[23]) + ")"
                     new_values.append(

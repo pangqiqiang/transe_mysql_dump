@@ -6,18 +6,13 @@ import os
 import time
 import iter_gmatch
 from common_func import *
+import common_dbs
 
 SEP = os.linesep
 
-LOAN_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                              database="dts_jjd", user="dev",
-                              password="KRkFcVCbopZbS8R7",
-                              tablename="loan")
+LOAN_DB = common_dbs.LOAN_DB
 
-USER_PASSPORT_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                       database="dts_jjd", user="dev",
-                                       password="KRkFcVCbopZbS8R7",
-                                       tablename="user_passport")
+USER_PASSPORT_DB = common_dbs.USER_PASSPORT_DB
 
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
                     "创业": 3, "租房": 4, "旅游": 5, "装修": 6, "医疗": 7}
@@ -100,7 +95,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[26] = 8 if output_arr[26] == None else output_arr[26]
                     # repay_time,t_repay_tm
                     output_arr[29] = input_arr[29]
-                    output_arr[28] = date2timestam(output_arr[29])
+                    output_arr[28] = date2int(output_arr[29])
                     # normal_repay_amount
                     output_arr[30] = float_char_to_int(input_arr[20])
                     # online_status,end_status,overdue_status
@@ -109,14 +104,14 @@ def conver_file(input_file, output_file, valid):
                     # valid_status
                     output_arr[34] = "b'1'"
                     # version_number
-                    output_arr[35] = input_arr[28]
+                    output_arr[35] = input_arr[27]
                     # payoff_time,t_pay_off_tm
-                    output_arr[37] = input_arr[30]
-                    output_arr[36] = date2timestam(output_arr[37])
+                    output_arr[37] = input_arr[29]
+                    output_arr[36] = date2int(output_arr[37])
                     #create_time, update_time
-                    output_arr[38] = datetime2timestam(input_arr[31])
-                    output_arr[39] = str(datetime2timestam(
-                        input_arr[32].rstrip(")"))) + ")"
+                    output_arr[38] = datetime2timestamp(input_arr[30])
+                    output_arr[39] = str(datetime2timestamp(
+                        input_arr[31].rstrip(")"))) + ")"
                     new_values.append(
                         ",".join([str(i) for i in output_arr]))
                 post = ",".join(new_values)
