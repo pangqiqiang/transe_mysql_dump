@@ -3,53 +3,48 @@
 
 import torndb_handler
 
-LOAN_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                              database="dts_jjd", user="dev",
-                              password="KRkFcVCbopZbS8R7",
+HOST = "prod.jjd.mysql01.srv:3308"
+DATABASE = "jjd_6th"
+USER = "dev"
+PASS = "KRkFcVCbopZbS8R7"
+
+LOAN_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                              user=USER, password=PASS,
                               tablename="loan")
 
-LOAN_INSTALLMENT_LIST_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                               database="dts_jjd", user="dev",
-                                               password="KRkFcVCbopZbS8R7",
+LOAN_INSTALLMENT_LIST_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                               user=USER, password=PASS,
                                                tablename="loan_installment_list")
 
-LOAN_WRITE_OFF_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                        database="dts_jjd", user="dev",
-                                        password="KRkFcVCbopZbS8R7",
+LOAN_WRITE_OFF_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                        user=USER, password=PASS,
                                         tablename="loan_write_off")
 
-USER_PASSPORT_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                       database="dts_jjd", user="dev",
-                                       password="KRkFcVCbopZbS8R7",
+USER_PASSPORT_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                       user=USER, password=PASS,
                                        tablename="user_passport")
 
-TRADE_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                               database="dts_jjd", user="dev",
-                               password="KRkFcVCbopZbS8R7",
+TRADE_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                               user=USER, password=PASS,
                                tablename="trade")
 
-COLLECTION_ACCOUNT_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                            database="dts_jjd", user="dev",
-                                            password="KRkFcVCbopZbS8R7",
+COLLECTION_ACCOUNT_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                            user=USER, password=PASS,
                                             tablename="collection_account")
 
-COLLECTION_APPLY_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                          database="dts_jjd", user="dev",
-                                          password="KRkFcVCbopZbS8R7",
+COLLECTION_APPLY_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                          user=USER, password=PASS,
                                           tablename="collection_apply")
 
 
-LOAN_OFFLINE_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                      database="dts_jjd", user="dev",
-                                      password="KRkFcVCbopZbS8R7",
+LOAN_OFFLINE_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                      user=USER, password=PASS,
                                       tablename="loan_offline")
 
-PRODUCT_BID_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                                     database="dts_jjd", user="dev",
-                                     password="KRkFcVCbopZbS8R7",
+PRODUCT_BID_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                     user=USER, password=PASS,
                                      tablename="product_bid")
 
-BID_DB = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                             database="dts_jjd", user="dev",
-                             password="KRkFcVCbopZbS8R7",
+BID_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                             user=USER, password=PASS,
                              tablename="bid")

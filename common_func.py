@@ -13,19 +13,26 @@ def float_char_to_int(str):
     return res
 
 
-def date2int(date):
+def date2timestamp(date):
     try:
         date = date.strip("'")
         time_arr = time.strptime(date, "%Y-%m-%d")
-        return int(time.mktime(time_arr))
+        time_obj = time.mktime(time_arr)
+        return "'" + time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_obj)) + "'"
     except ValueError:
         return "NULL"
 
 
-def datetime2int(date):
+def datetime2timestamp(date):
     try:
         date = date.strip("'")
         time_arr = time.strptime(date, "%Y-%m-%d %H:%M:%S")
-        return int(time.mktime(time_arr))
+        time_obj = time.mktime(time_arr)
+        return "'" + time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_obj)) + "'"
     except ValueError:
         return "NULL"
+
+
+if __name__ == "__main__":
+    print(datetime2timestamp("'2018-08-25 12:20:00'"))
+    print(date2timestamp("2018-08-25"))

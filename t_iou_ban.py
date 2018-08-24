@@ -115,10 +115,10 @@ def conver_file(input_file, output_file, output_file2, valid):
                             out_arr[i] = input_arr[i - 6]
                         # borrow_time[32](t_borrow_tm)[33]
                         out_arr[33] = input_arr[26]
-                        out_arr[32] = date2int(out_arr[33])
+                        out_arr[32] = date2timestam(out_arr[33])
                         # repay_time[34](t_repay_tm)[35]
                         out_arr[35] = input_arr[27]
-                        out_arr[34] = date2int(out_arr[35])
+                        out_arr[34] = date2timestam(out_arr[35])
                         # online_status,[36],# pic_list,[37],source_type,[38]
                         for i in range(36, 39):
                             out_arr[i] = input_arr[i - 8]
@@ -140,9 +140,9 @@ def conver_file(input_file, output_file, output_file2, valid):
                         for i in range(43, 46):
                             out_arr[i] = input_arr[i - 10]
                         # create_time,[46]
-                        out_arr[46] = datetime2int(input_arr[36])
+                        out_arr[46] = datetime2timestam(input_arr[36])
                         # update_time[47]
-                        out_arr[47] = str(datetime2int(
+                        out_arr[47] = str(datetime2timestam(
                             input_arr[37].rstrip(")"))) + ")"
                         for i in range(38, len(input_arr)):
                             json_arr.append(input_arr[i])

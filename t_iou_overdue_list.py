@@ -6,6 +6,7 @@ import torndb_handler
 import threading
 import os
 import time
+import common_dbs
 
 OUTPUT_FILE = "/tmp/t_iou_overdue_list_out.sql"
 INPUT_FILE0 = "t_iou_overdue_list000"
@@ -15,27 +16,11 @@ INPUT_FILE3 = "t_iou_overdue_list003"
 INPUT_FILE4 = "t_iou_overdue_list004"
 SEP = os.linesep
 # 为了多线程加速采用多个db对象查询
-MYDB0 = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                            database="dts_jjd", user="dev",
-                            password="KRkFcVCbopZbS8R7",
-                            tablename="loan_installment_list")
-
-MYDB1 = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                            database="dts_jjd", user="dev",
-                            password="KRkFcVCbopZbS8R7",
-                            tablename="loan_installment_list")
-MYDB2 = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                            database="dts_jjd", user="dev",
-                            password="KRkFcVCbopZbS8R7",
-                            tablename="loan_installment_list")
-MYDB3 = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                            database="dts_jjd", user="dev",
-                            password="KRkFcVCbopZbS8R7",
-                            tablename="loan_installment_list")
-MYDB4 = torndb_handler.MyDB(host="rm-2ze208m29he873gr9.mysql.rds.aliyuncs.com:3306",
-                            database="dts_jjd", user="dev",
-                            password="KRkFcVCbopZbS8R7",
-                            tablename="loan_installment_list")
+MYDB0 = common_dbs.LOAN_INSTALLMENT_LIST_DB
+MYDB1 = common_dbs.LOAN_INSTALLMENT_LIST_DB
+MYDB2 = common_dbs.LOAN_INSTALLMENT_LIST_DB
+MYDB3 = common_dbs.LOAN_INSTALLMENT_LIST_DB
+MYDB4 = common_dbs.LOAN_INSTALLMENT_LIST_DB
 # 导入迭代器函数
 gmatch = iter_gmatch.gmatch
 # 数据有效行必须以INSERT 开头
@@ -78,13 +63,13 @@ def conver_file(input_file, output_file, valid, mydb):
                     new_id = mydb.fetch_from_origin_id(
                         origin_id.replace("'", ""))
                     # mutex.release()
-                    temp_arr[2] = str(int(float(temp_arr[2]) * 100))
-                    temp_arr[3] = str(int(float(temp_arr[3]) * 100))
+                    temp_arr[2] = str(int(float(temp_arr[2]) * 100 + 0.5))
+                    temp_arr[3] = str(int(float(temp_arr[3]) * 100 + 0.5))
                     del temp_arr[1]
                     temp_arr.insert(0, "(" + str(new_id))
                     temp_arr[1] = origin_id
                     temp_arr[-1] = temp_arr[-1].rstrip(")")
-                    temp_arr.append("'0')")
+                    temp_arr.append("b'0')")
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)
                 mutex.acquire()

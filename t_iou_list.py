@@ -116,18 +116,18 @@ def conver_file(input_file, output_file, valid):
                     output_arr[35] = input_arr[20]
                     # receive_time(t_rcv_tm)
                     output_arr[38] = input_arr[27]
-                    output_arr[37] = datetime2int(output_arr[38])
+                    output_arr[37] = datetime2timestam(output_arr[38])
                     # receive_status
                     output_arr[36] = "b'0'" if output_arr[38] == "NULL" else "b'1'"
                     # reconciliation_status
                     output_arr[39] = input_arr[23]
                     # reconciliation_time(t_reconciliation_tm)
                     output_arr[41] = input_arr[28].rstrip(")")
-                    output_arr[40] = datetime2int(output_arr[41])
+                    output_arr[40] = datetime2timestam(output_arr[41])
                     # extend_time_status
                     output_arr[42] = input_arr[24]
                     # create_time
-                    output_arr[43] = datetime2int(input_arr[26])
+                    output_arr[43] = datetime2timestam(input_arr[26])
                     # update_time
                     output_arr[44] = str(output_arr[43]) + ")"
                     new_values.append(",".join([str(i) for i in output_arr]))

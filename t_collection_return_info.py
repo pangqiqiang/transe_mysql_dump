@@ -55,7 +55,7 @@ def conver_file(input_file, output_file, valid):
                     for i in range(9, 37):
                         output_arr[i] = int(input_arr[i - 3])
                     # create_time
-                    output_arr[37] = datetime2int(input_arr[34].rstrip(")"))
+                    output_arr[37] = datetime2timestam(input_arr[34].rstrip(")"))
                     # update_time
                     output_arr[38] = str(output_arr[37]) + ")"
                     new_values.append(",".join([str(i) for i in output_arr]))

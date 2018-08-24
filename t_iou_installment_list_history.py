@@ -100,7 +100,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[26] = 8 if output_arr[26] == None else output_arr[26]
                     # repay_time,t_repay_tm
                     output_arr[29] = input_arr[29]
-                    output_arr[28] = date2int(output_arr[29])
+                    output_arr[28] = date2timestam(output_arr[29])
                     # normal_repay_amount
                     output_arr[30] = float_char_to_int(input_arr[20])
                     # online_status,end_status,overdue_status
@@ -112,10 +112,10 @@ def conver_file(input_file, output_file, valid):
                     output_arr[35] = input_arr[28]
                     # payoff_time,t_pay_off_tm
                     output_arr[37] = input_arr[30]
-                    output_arr[36] = date2int(output_arr[37])
+                    output_arr[36] = date2timestam(output_arr[37])
                     #create_time, update_time
-                    output_arr[38] = datetime2int(input_arr[31])
-                    output_arr[39] = str(datetime2int(
+                    output_arr[38] = datetime2timestam(input_arr[31])
+                    output_arr[39] = str(datetime2timestam(
                         input_arr[32].rstrip(")"))) + ")"
                     new_values.append(
                         ",".join([str(i) for i in output_arr]))

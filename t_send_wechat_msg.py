@@ -6,13 +6,14 @@ import iter_gmatch
 import torndb_handler
 import os
 import common_dbs
+from common_func import *
 
 OUTPUT_FILE = "/tmp/user_wechat_msg_out.sql"
-INPUT_FILE0 = "t_send_wechat_msg00"
-INPUT_FILE1 = "t_send_wechat_msg01"
-INPUT_FILE2 = "t_send_wechat_msg02"
-INPUT_FILE3 = "t_send_wechat_msg03"
-INPUT_FILE4 = "t_send_wechat_msg04"
+INPUT_FILE0 = "t_send_wechat_msg000"
+INPUT_FILE1 = "t_send_wechat_msg001"
+INPUT_FILE2 = "t_send_wechat_msg002"
+INPUT_FILE3 = "t_send_wechat_msg003"
+INPUT_FILE4 = "t_send_wechat_msg004"
 SEP = os.linesep
 # 导入数据库类,用多个实例防止线程竞争，限制速度
 MYDB0 = common_dbs.USER_PASSPORT_DB
@@ -49,14 +50,18 @@ def conver_file(input_file, output_file, valid, mydb):
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))]
+                pre = line[:(pre_pos + 1 + len("VALUES"))
+                           ].replace("t_send_wechat_msg", "user_wechat_msg")
                 new_values = []
                 for item in gmatch(line, "(", ")", pre_pos):
                     temp_arr = item.split(",")
                     salt = salt = temp_arr[0].lstrip("(")
-                    new_id = MYDB.fetch_id(salt.replace("'", ""))
+                    new_id = mydb.fetch_from_salt(salt.strip("'"))
                     # print(new_id)
                     temp_arr.insert(0, "(" + "'" + str(new_id) + "'")
+                    temp_arr[1] = temp_arr[1].lstrip("(")
+                    temp_arr[-1] = datetime2timestam(temp_arr[-1].rstrip(")"))
+                    temp_arr[-1] = str(temp_arr[-1]) + ")"
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)
                 mutex.acquire()
@@ -64,11 +69,12 @@ def conver_file(input_file, output_file, valid, mydb):
                 mutex.release()
 
 
-thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE, valid, pattern))
-thread1 = myThread(conver_file, (INPUT_FILE1, OUTPUT_FILE, valid, pattern))
-thread2 = myThread(conver_file, (INPUT_FILE2, OUTPUT_FILE, valid, pattern))
-thread3 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, valid, pattern))
-thread4 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, valid, pattern))
+start_time = time.clock()
+thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE, valid, MYDB0))
+thread1 = myThread(conver_file, (INPUT_FILE1, OUTPUT_FILE, valid, MYDB1))
+thread2 = myThread(conver_file, (INPUT_FILE2, OUTPUT_FILE, valid, MYDB2))
+thread3 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, valid, MYDB3))
+thread4 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, valid, MYDB4))
 
 # 添加线程到线程列表
 threads.append(thread0)
@@ -84,4 +90,8 @@ for t in threads:
 for t in threads:
     t.join()
 
-print("All documents complete!!!")
+end_time = time.clock()
+
+time_elapse = (end_time - start_time)
+
+print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)
