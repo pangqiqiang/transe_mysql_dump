@@ -8,7 +8,7 @@ import os
 import time
 import common_dbs
 
-OUTPUT_FILE = "/tmp/t_iou_overdue_list_out.sql"
+OUTPUT_FILE = "/home/pangqiqiang/t_iou_overdue_list_out.sql"
 INPUT_FILE0 = "t_iou_overdue_list000"
 INPUT_FILE1 = "t_iou_overdue_list001"
 INPUT_FILE2 = "t_iou_overdue_list002"
@@ -57,7 +57,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 new_values = []
                 for item in gmatch(line, "(", ")", pre_pos):
                     item = item.strip(",")
-                    temp_arr = item.split(",")
+                    temp_arr = parse_sql_fields(item)
                     origin_id = temp_arr[0].lstrip("(")
                     # mutex.acquire()公用dbclient的时候必须加锁
                     new_id = mydb.fetch_from_origin_id(

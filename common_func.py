@@ -2,6 +2,31 @@
 #-*-coding:utf-8-*-
 
 import time
+from collections import deque
+
+
+def parse_sql_fields(str):
+    origin_arr = str.split(",")
+    dup = deque(origin_arr[::])
+    fields = []
+    while True:
+        try:
+            item = dup.popleft()
+            if item.find("[") == -1 and item.find("{") == -1:
+                fields.append(item)
+            elif (item.count("[") == item.count("]") and
+                  item.count("{") == item.count("}")):
+                fields.append(item)
+            else:
+                temp = item
+                while dup and (temp.count("[") != temp.count("]") or
+                               temp.count("{") != temp.count("}")):
+                    temp += "," + dup.popleft()
+                    # print(temp)
+                fields.append(temp)
+        except IndexError:
+            break
+    return fields
 
 
 def float_char_to_int(str):
@@ -56,3 +81,4 @@ if __name__ == "__main__":
     print(date2timestamp("2018-08-25"))
     print(date2int("2018-08-25"))
     print(datetime2int("'2018-08-25 12:20:00'"))
+    print(parse_sql_fields("a,b,c,[{m,[3,2,1]n},{k,v}],s"))

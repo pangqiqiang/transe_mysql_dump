@@ -44,7 +44,7 @@ def conver_file(input_file, output_file, valid):
                     # 输出列表初始化
                     output_arr = list(range(45))
                     item = item.strip(",")
-                    input_arr = item.split(",")
+                    input_arr = parse_sql_fields(item)
                     output_arr[0] = "(" + str(seq_count)
                     # original_id
                     output_arr[1] = input_arr[0].lstrip("(")
@@ -137,7 +137,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.clock()
 conver_file("t_iou_list.sql",
-            "/tmp/t_iou_list_out.sql", valid)
+            "/home/pangqiqiang/t_iou_list_out.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

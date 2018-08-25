@@ -37,7 +37,7 @@ def conver_file(input_file, output_file, valid):
                     # id
                     output_arr[0] = "(" + str(seq_count)
                     item = item.strip(",")
-                    input_arr = item.split(",")
+                    input_arr = parse_sql_fields(item)
                     # original_id
                     output_arr[1] = input_arr[0].lstrip("(")
                     # loan_id(c_iou_id)
@@ -67,7 +67,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.clock()
 conver_file("t_collection_return_info.sql",
-            "/tmp/t_collection_return_info_out.sql", valid)
+            "/home/t_collection_return_info_out.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

@@ -44,7 +44,7 @@ def conver_file(input_file, output_file, valid):
                     # 输出映射数组
                     output_arr = list(range(40))
                     item = item.strip(",")
-                    input_arr = item.split(",")
+                    input_arr = parse_sql_fields(item)
                     seq_count += 1
                     output_arr[0] = "(" + str(seq_count)
                     # Original_id,[1],cur_period,total_period,
@@ -120,7 +120,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.clock()
 conver_file("t_iou_installment_list.sql",
-            "/tmp/loan_installment_list_out.sql", valid)
+            "/home/pangqiqiang/loan_installment_list_out.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

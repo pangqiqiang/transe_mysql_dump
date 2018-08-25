@@ -8,7 +8,7 @@ import os
 import common_dbs
 from common_func import *
 
-OUTPUT_FILE = "/tmp/user_wechat_msg_out.sql"
+OUTPUT_FILE = "/home/pangqiqiang/user_wechat_msg_out.sql"
 INPUT_FILE0 = "t_send_wechat_msg000"
 INPUT_FILE1 = "t_send_wechat_msg001"
 INPUT_FILE2 = "t_send_wechat_msg002"
@@ -54,7 +54,7 @@ def conver_file(input_file, output_file, valid, mydb):
                            ].replace("t_send_wechat_msg", "user_wechat_msg")
                 new_values = []
                 for item in gmatch(line, "(", ")", pre_pos):
-                    temp_arr = item.split(",")
+                    temp_arr = parse_sql_fields(item)
                     salt = salt = temp_arr[0].lstrip("(")
                     new_id = mydb.fetch_from_salt(salt.strip("'"))
                     # print(new_id)

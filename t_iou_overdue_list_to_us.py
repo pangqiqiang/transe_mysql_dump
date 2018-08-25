@@ -31,7 +31,7 @@ def conver_file(input_file, output_file, valid):
                 new_values = []
                 for item in gmatch(line, "(", ")", pre_pos):
                     item = item.strip(",")
-                    temp_arr = item.split(",")
+                    temp_arr = parse_sql_fields(item)
                     origin_id = temp_arr[0].lstrip("(")
                     # mutex.acquire()公用dbclient的时候必须加锁
                     new_id = MYDB.fetch_from_origin_id(
@@ -51,7 +51,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.clock()
 conver_file("t_iou_overdue_list_to_us.sql",
-            "/tmp/t_iou_overdue_list_to_us_out.sql", valid)
+            "/home/pangqiqiang/t_iou_overdue_list_to_us_out.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)
