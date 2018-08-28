@@ -29,15 +29,15 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, output_file2, valid):
     # 维护自增id
-    seq_count = 50
-    json_count = 0
+    seq_count = 1047922
+    #json_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             with open(output_file2, "w") as fout_json:
                 for line in fin:
                     if not line.startswith(valid):
                         continue
-                    line.rstrip()
+                    line = unescape_quote(line)
                     pre_pos = line.find("VALUES")
                     if pre_pos == -1:
                         continue
@@ -46,11 +46,11 @@ def conver_file(input_file, output_file, output_file2, valid):
                                ].replace("t_iou_history", "loan")
                     new_values = []
                     json_values = []
-                    for item in gmatch(line, "(", ")", pre_pos):
+                    for item in gmatch(line, "(", "),", pre_pos):
                         # 维护自增id
                         seq_count += 1
                         # 输出映射数组
-                        out_arr = list(range(48))
+                        out_arr = list(range(50))
                         json_arr = []
                         # id
                         out_arr[0] = "(" + str(seq_count)
@@ -144,7 +144,10 @@ def conver_file(input_file, output_file, output_file2, valid):
                         out_arr[46] = datetime2timestamp(input_arr[36])
                         # update_time[47]
                         out_arr[47] = str(datetime2timestamp(
-                            input_arr[37].rstrip(")"))) + ")"
+                            input_arr[37].rstrip(")")))
+                        # borrower_ip,lender_ip
+                        out_arr[48] = "NULL"
+                        out_arr[49] = "NULL" + ")"
                         for i in range(38, len(input_arr)):
                             json_arr.append(input_arr[i])
                         json_arr.insert(-1, "NULL")
@@ -154,13 +157,13 @@ def conver_file(input_file, output_file, output_file2, valid):
                         json_values.append(",".join(json_arr))
                     post = ",".join(new_values)
                     json_post = ",".join(json_values)
-                    fout.write(pre + " " + post + SEP)
-                    fout_json.write(JSON_PRE + json_post + SEP)
+                    fout.write(pre + " " + post + ";" + SEP)
+                    fout_json.write(JSON_PRE + json_post + ";" + SEP)
 
 
 start_time = time.clock()
 conver_file("t_iou_history.sql",
-            "/tmp/pangqiqiang/loan_t_iou_history_out.sql", "/tmp/t_iou_histoy_json.sql", valid)
+            "/home/pangqiqiang/loan_t_iou_history_out.sql", "/home/pangqiqiang/t_iou_histoy_json.sql", valid)
 end_time = time.clock()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

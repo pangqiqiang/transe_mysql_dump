@@ -2,6 +2,7 @@
 #-*-coding:utf-8-*-
 
 import time
+import re
 from collections import deque
 
 
@@ -12,21 +13,30 @@ def parse_sql_fields(str):
     while True:
         try:
             item = dup.popleft()
-            if item.find("[") == -1 and item.find("{") == -1:
+            if item.find("'") == -1:
                 fields.append(item)
-            elif (item.count("[") == item.count("]") and
-                  item.count("{") == item.count("}")):
+            elif item.count("'") % 2 == 0:
                 fields.append(item)
             else:
                 temp = item
-                while dup and (temp.count("[") != temp.count("]") or
-                               temp.count("{") != temp.count("}")):
+                while dup and temp.count("'") % 2 != 0:
                     temp += "," + dup.popleft()
                     # print(temp)
                 fields.append(temp)
         except IndexError:
             break
     return fields
+
+
+def unescape_quote(value):
+    pat1 = re.compile(r'\\{2}')
+    value = value.rstrip().rstrip(";")
+    value = value.replace("（", "(")
+    value = value.replace("）", ")")
+    value = pat1.sub("", value)
+    value = value.replace("\\'", "")
+    value = value + ","
+    return value
 
 
 def float_char_to_int(str):
@@ -42,8 +52,9 @@ def date2timestamp(date):
     try:
         date = date.strip("'")
         time_arr = time.strptime(date, "%Y-%m-%d")
-        time_obj = time.mktime(time_arr)
-        return "'" + time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_obj)) + "'"
+        # time_obj = time.mktime(time_arr)
+        # return "'" + time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_obj)) + "'"
+        return "'" + date + "'"
     except ValueError:
         return "NULL"
 
@@ -70,8 +81,9 @@ def datetime2timestamp(date):
     try:
         date = date.strip("'")
         time_arr = time.strptime(date, "%Y-%m-%d %H:%M:%S")
-        time_obj = time.mktime(time_arr)
-        return "'" + time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_obj)) + "'"
+        # time_obj = time.mktime(time_arr)
+        # return "'" + time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_obj)) + "'"
+        return "'" + date + "'"
     except ValueError:
         return "NULL"
 
@@ -81,4 +93,4 @@ if __name__ == "__main__":
     print(date2timestamp("2018-08-25"))
     print(date2int("2018-08-25"))
     print(datetime2int("'2018-08-25 12:20:00'"))
-    print(parse_sql_fields("a,b,c,[{m,[3,2,1]n},{k,v}],s"))
+    print(parse_sql_fields("a,b,c,[{m,[3,2,1]n},{k,v}],s,'sss,seele'"))

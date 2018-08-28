@@ -45,7 +45,7 @@ def conver_file(input_file, output_file, valid, mydb):
             for line in fin:
                 if not line.startswith(valid):
                     continue
-                line.rstrip()
+                line = unescape_quote(line)
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue
@@ -53,7 +53,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 pre = line[:(pre_pos + 1 + len("VALUES"))
                            ].replace("t_send_wechat_msg", "user_wechat_msg")
                 new_values = []
-                for item in gmatch(line, "(", ")", pre_pos):
+                for item in gmatch(line, "(", "),", pre_pos):
                     temp_arr = parse_sql_fields(item)
                     salt = salt = temp_arr[0].lstrip("(")
                     new_id = mydb.fetch_from_salt(salt.strip("'"))
@@ -65,7 +65,7 @@ def conver_file(input_file, output_file, valid, mydb):
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)
                 mutex.acquire()
-                fout.write(pre + " " + post + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
                 mutex.release()
 
 

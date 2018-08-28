@@ -32,7 +32,8 @@ def conver_file(input_file, output_file, valid):
             for line in fin:
                 if not line.startswith(valid):
                     continue
-                line.rstrip()
+                line = unescape_quote(line)
+                # print(line)
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue
@@ -40,11 +41,12 @@ def conver_file(input_file, output_file, valid):
                 pre = line[:(pre_pos + 1 + len("VALUES"))
                            ].replace("t_iou", "loan")
                 new_values = []
-                for item in gmatch(line, "(", ")", pre_pos):
+                for item in gmatch(line, "(", "),", pre_pos):
                     # 维护自增id
                     seq_count += 1
+                    # print(item)
                     # 输出映射数组
-                    out_arr = list(range(48))
+                    out_arr = list(range(50))
                     # id
                     out_arr[0] = "(" + str(seq_count)
                     item = item.strip(",")
@@ -135,11 +137,14 @@ def conver_file(input_file, output_file, valid):
                     out_arr[46] = datetime2timestamp(input_arr[37])
                     # update_time[47]
                     out_arr[47] = str(datetime2timestamp(
-                        input_arr[38].rstrip(")"))) + ")"
+                        input_arr[38].rstrip(")")))
+                    # borrower_ip,lender_ip
+                    out_arr[48] = "NULL"
+                    out_arr[49] = "NULL" + ")"
                     new_values.append(
                         ",".join([str(i) for i in out_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
 
 
 start_time = time.clock()

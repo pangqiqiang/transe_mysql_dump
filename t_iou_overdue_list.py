@@ -43,19 +43,21 @@ class myThread(threading.Thread):
 
 
 def conver_file(input_file, output_file, valid, mydb):
+    global mutex
     with open(input_file, 'r') as fin:
         with open(output_file, 'a') as fout:
             for line in fin:
                 if not line.startswith(valid):
                     continue
-                line.rstrip()
+                line = unescape_quote(line)
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))]
+                pre = line[:(pre_pos + 1 + len("VALUES"))].replace("t_iou_overdue_list",
+                                                                   "loan_overdue_forfeit_list")
                 new_values = []
-                for item in gmatch(line, "(", ")", pre_pos):
+                for item in gmatch(line, "(", "),", pre_pos):
                     item = item.strip(",")
                     temp_arr = parse_sql_fields(item)
                     origin_id = temp_arr[0].lstrip("(")
@@ -73,7 +75,7 @@ def conver_file(input_file, output_file, valid, mydb):
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)
                 mutex.acquire()
-                fout.write(pre + " " + post + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
                 mutex.release()
 
 

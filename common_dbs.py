@@ -3,8 +3,8 @@
 
 import torndb_handler
 
-HOST = "prod.jjd.mysql01.srv:3308"
-DATABASE = "jjd_6th"
+HOST = "10.111.30.20:3306"
+DATABASE = "jjd_9th"
 USER = "dev"
 PASS = "KRkFcVCbopZbS8R7"
 

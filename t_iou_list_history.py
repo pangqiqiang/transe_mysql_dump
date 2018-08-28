@@ -9,6 +9,14 @@ from common_func import *
 import common_dbs
 
 SEP = os.linesep
+FILEDS = " (id,original_id,loan_id,c_iou_id,loan_installment_list_id,c_iou_installment_list_id,\
+write_off_id,c_write_off_id, c_user_id,repayer_type,confirm_id,c_confirm_id,lender_uid,c_lender_id,\
+borrower_uid,c_borrower_id,guarantee_uid,c_guarantee_id,trade_id,c_trade_id,repay_amount,amount,interest_amount,\
+forfeit_amount,commission_amount,commission_party_amount,collection_account_id,c_collection_account_id,collection_apply_id,\
+c_collection_apply_id,overdue_manage_amount,return_overdue_manage_amount,online_status,offline_pay_method,c_offline_pay_method,\
+valid_status,receive_status,receive_time,t_rcv_tm,reconciliation_status,reconciliation_time,t_reconciliation_tm,\
+extend_time_status,create_time,update_time) "
+
 # 导入数据库类
 LOAN_DB = common_dbs.LOAN_DB
 LOAN_INSTALLMENT_LIST_DB = common_dbs.LOAN_INSTALLMENT_LIST_DB
@@ -31,15 +39,15 @@ def conver_file(input_file, output_file, valid):
             for line in fin:
                 if not line.startswith(valid):
                     continue
-                line.rstrip()
+                line = unescape_quote(line)
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))
-                           ].replace("t_iou_list_history", "loan_repay_list")
+                pre = line[:pre_pos] + FILEDS + "VALUES"
+                pre = pre.replace("t_iou_list", "loan_repay_list")
                 new_values = []
-                for item in gmatch(line, "(", ")", pre_pos):
+                for item in gmatch(line, "(", "),", pre_pos):
                     seq_count += 1
                     # 输出列表初始化
                     output_arr = list(range(45))
@@ -132,7 +140,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[44] = str(output_arr[43]) + ")"
                     new_values.append(",".join([str(i) for i in output_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
 
 
 start_time = time.clock()

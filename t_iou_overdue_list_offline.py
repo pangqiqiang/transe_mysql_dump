@@ -20,7 +20,7 @@ def conver_file(input_file, output_file, valid):
             for line in fin:
                 if not line.startswith(valid):
                     continue
-                line.rstrip()
+                line = unescape_quote(line)
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue
@@ -28,7 +28,7 @@ def conver_file(input_file, output_file, valid):
                 pre = line[:(pre_pos + 1 + len("VALUES"))].replace(
                     "t_iou_overdue_list_offline", "loan_overdue_forfeit_list_offline")
                 new_values = []
-                for item in gmatch(line, "(", ")", pre_pos):
+                for item in gmatch(line, "(", "),", pre_pos):
                     # 输出映射数组
                     output_arr = list(range(7))
                     item = item.strip(",")
@@ -51,7 +51,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[6] = "b'0'" + ")"
                     new_values.append(",".join([str(i) for i in output_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
 
 
 start_time = time.clock()

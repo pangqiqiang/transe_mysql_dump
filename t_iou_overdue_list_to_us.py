@@ -46,7 +46,7 @@ def conver_file(input_file, output_file, valid):
                     temp_arr.append("b'0')")
                     new_values.append(",".join(temp_arr))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
 
 
 start_time = time.clock()
