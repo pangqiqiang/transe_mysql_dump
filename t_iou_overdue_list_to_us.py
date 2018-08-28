@@ -6,10 +6,10 @@ import os
 import time
 import iter_gmatch
 import common_dbs
-
+from common_func import *
 
 SEP = os.linesep
-导入数据库类
+# 导入数据库类
 MYDB = common_dbs.LOAN_INSTALLMENT_LIST_DB
 
 gmatch = iter_gmatch.gmatch
@@ -27,7 +27,8 @@ def conver_file(input_file, output_file, valid):
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))]
+                pre = line[:(pre_pos + 1 + len("VALUES"))].replace(
+                    "t_iou_overdue_list_to_us","loan_overdue_manage_fee_list")
                 new_values = []
                 for item in gmatch(line, "(", ")", pre_pos):
                     item = item.strip(",")
@@ -44,7 +45,7 @@ def conver_file(input_file, output_file, valid):
                     temp_arr[1] = origin_id
                     temp_arr[-1] = temp_arr[-1].rstrip(")")
                     temp_arr.append("b'0')")
-                    new_values.append(",".join(temp_arr))
+                    new_values.append(",".join([str(i) for i in temp_arr]))
                 post = ",".join(new_values)
                 fout.write(pre + " " + post + ";" + SEP)
 

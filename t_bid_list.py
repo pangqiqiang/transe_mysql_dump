@@ -27,7 +27,7 @@ def conver_file(input_file, output_file, valid):
             for line in fin:
                 if not line.startswith(valid):
                     continue
-                line = line.unescape_quote(line)
+                line = unescape_quote(line)
                 pre_pos = line.find("VALUES")
                 if pre_pos == -1:
                     continue

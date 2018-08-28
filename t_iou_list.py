@@ -9,14 +9,6 @@ from common_func import *
 import common_dbs
 
 SEP = os.linesep
-FILEDS = " (id,original_id,loan_id,c_iou_id,loan_installment_list_id,c_iou_installment_list_id,\
-write_off_id,c_write_off_id, c_user_id,repayer_type,confirm_id,c_confirm_id,lender_uid,c_lender_id,\
-borrower_uid,c_borrower_id,guarantee_uid,c_guarantee_id,trade_id,c_trade_id,repay_amount,amount,interest_amount,\
-forfeit_amount,commission_amount,commission_party_amount,collection_account_id,c_collection_account_id,collection_apply_id,\
-c_collection_apply_id,overdue_manage_amount,return_overdue_manage_amount,online_status,offline_pay_method,c_offline_pay_method,\
-valid_status,receive_status,receive_time,t_rcv_tm,reconciliation_status,reconciliation_time,t_reconciliation_tm,\
-extend_time_status,create_time,update_time) "
-
 # 导入数据库类
 LOAN_DB = common_dbs.LOAN_DB
 LOAN_INSTALLMENT_LIST_DB = common_dbs.LOAN_INSTALLMENT_LIST_DB
@@ -44,8 +36,8 @@ def conver_file(input_file, output_file, valid):
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:pre_pos] + FILEDS + "VALUES"
-                pre = pre.replace("t_iou_list", "loan_repay_list")
+                pre = pre = line[:(pre_pos + 1 + len("VALUES"))
+                                 ].replace("t_iou_list", "loan_repay_list")
                 new_values = []
                 for item in gmatch(line, "(", "),", pre_pos):
                     seq_count += 1
@@ -64,31 +56,36 @@ def conver_file(input_file, output_file, valid):
                     output_arr[5] = input_arr[2]
                     output_arr[4] = LOAN_INSTALLMENT_LIST_DB.fetch_from_origin_id(
                         output_arr[5].strip("'"))
-                    # write_off_id(c_write_off_id,),
+                    # write_off_id(c_write_off_id,)
                     output_arr[7] = input_arr[3]
                     output_arr[6] = LOAN_WRITE_OFF_DB.fetch_from_origin_id(
                         output_arr[7].strip("'"))
                     # c_user_id
                     output_arr[8] = input_arr[4]
-                    # confirm_id,(c_confirm_id),lender_uid,(c_lender_id),borrower_uid
+                    # lender_uid,(c_lender_id),borrower_uid
                     #(c_borrower_id),guarantee_uid
-                    for i in range(10, 18, 2):
-                        output_arr[i + 1] = input_arr[5 + (i - 10) / 2]
+                    for i in range(9, 14, 2):
+                        output_arr[i + 1] = input_arr[6 + (i - 9) / 2]
                         output_arr[i] = USER_PASSPORT_DB.fetch_from_salt(
                             output_arr[i + 1])
+                    # repayer_type
+                    # c_user_id=(c_borrower_id)type=1
+                    if output_arr[8] == output_arr[12]:
+                        output_arr[15] = 1
+                    # c_user_id=(c_lender_id)type=2
+                    elif output_arr[8] == output_arr[10]:
+                        output_arr[15] = 2
+                    else:
+                        output_arr[15] = 3
+                    # confirm_id, c_confirm_id
+                    output_arr[17] = input_arr[5]
+                    output_arr[16] = USER_PASSPORT_DB.fetch_from_salt(
+                        output_arr[17].strip("'"))
                     # trade_id(c_trade_id)
                     output_arr[19] = input_arr[9]
                     output_arr[18] = TRADE_DB.fetch_from_origin_id(
                         output_arr[19].strip("'"))
-                    # repayer_type
-                    # c_user_id=(c_borrower_id)type=1
-                    if output_arr[8] == output_arr[15]:
-                        output_arr[9] = 1
-                    # c_user_id=(c_lender_id)type=2
-                    elif output_arr[8] == output_arr[13]:
-                        output_arr[9] = 2
-                    else:
-                        output_arr[9] = 3
+
                     # repay_amount,amount,interest_amount,forfeit_amount,
                     # commission_amount,commission_party_amount
                     for i in range(20, 26):
@@ -126,7 +123,8 @@ def conver_file(input_file, output_file, valid):
                     output_arr[38] = input_arr[27]
                     output_arr[37] = datetime2int(output_arr[38])
                     # receive_status
-                    output_arr[36] = "b'0'" if output_arr[38] == "NULL" else "b'1'"
+                    output_arr[36] = "b'0'" if (
+                        output_arr[38] == "NULL" or len(output_arr[38]) == 0) else "b'1'"
                     # reconciliation_status
                     output_arr[39] = input_arr[23]
                     # reconciliation_time(t_reconciliation_tm)
@@ -140,7 +138,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[44] = str(output_arr[43]) + ")"
                     new_values.append(",".join([str(i) for i in output_arr]))
                 post = ",".join(new_values)
-                fout.write(+ " " + post + ";" + SEP)
+                fout.write(pre + " " + post + ";" + SEP)
 
 
 start_time = time.clock()

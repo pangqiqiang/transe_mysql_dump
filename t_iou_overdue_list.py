@@ -6,7 +6,14 @@ import torndb_handler
 import threading
 import os
 import time
-import common_dbs
+from common_func import *
+import torndb_handler
+
+HOST = "10.111.30.20:3306"
+DATABASE = "jjd_9th"
+USER = "dev"
+PASS = "KRkFcVCbopZbS8R7"
+
 
 OUTPUT_FILE = "/home/pangqiqiang/t_iou_overdue_list_out.sql"
 INPUT_FILE0 = "t_iou_overdue_list000"
@@ -15,12 +22,23 @@ INPUT_FILE2 = "t_iou_overdue_list002"
 INPUT_FILE3 = "t_iou_overdue_list003"
 INPUT_FILE4 = "t_iou_overdue_list004"
 SEP = os.linesep
+
 # 为了多线程加速采用多个db对象查询
-MYDB0 = common_dbs.LOAN_INSTALLMENT_LIST_DB
-MYDB1 = common_dbs.LOAN_INSTALLMENT_LIST_DB
-MYDB2 = common_dbs.LOAN_INSTALLMENT_LIST_DB
-MYDB3 = common_dbs.LOAN_INSTALLMENT_LIST_DB
-MYDB4 = common_dbs.LOAN_INSTALLMENT_LIST_DB
+MYDB0 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                            user=USER, password=PASS,
+                            tablename="loan_installment_list")
+MYDB1 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                            user=USER, password=PASS,
+                            tablename="loan_installment_list")
+MYDB2 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                            user=USER, password=PASS,
+                            tablename="loan_installment_list")
+MYDB3 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                            user=USER, password=PASS,
+                            tablename="loan_installment_list")
+MYDB4 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                            user=USER, password=PASS,
+                            tablename="loan_installment_list")
 # 导入迭代器函数
 gmatch = iter_gmatch.gmatch
 # 数据有效行必须以INSERT 开头
@@ -43,7 +61,6 @@ class myThread(threading.Thread):
 
 
 def conver_file(input_file, output_file, valid, mydb):
-    global mutex
     with open(input_file, 'r') as fin:
         with open(output_file, 'a') as fout:
             for line in fin:
@@ -61,10 +78,11 @@ def conver_file(input_file, output_file, valid, mydb):
                     item = item.strip(",")
                     temp_arr = parse_sql_fields(item)
                     origin_id = temp_arr[0].lstrip("(")
-                    # mutex.acquire()公用dbclient的时候必须加锁
+                    print(origin_id)
+                    mutex.acquire()  # 公用dbclient的时候必须加锁
                     new_id = mydb.fetch_from_origin_id(
                         origin_id.replace("'", ""))
-                    # mutex.release()
+                    mutex.release()
                     temp_arr[2] = str(int(float(temp_arr[2]) * 100 + 0.5))
                     temp_arr[3] = str(int(float(temp_arr[3]) * 100 + 0.5))
                     del temp_arr[1]
