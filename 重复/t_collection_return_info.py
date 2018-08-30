@@ -43,7 +43,7 @@ def conver_file(input_file, output_file, valid):
                     # loan_id(c_iou_id)
                     output_arr[3] = input_arr[1]
                     output_arr[2] = LOAN_DB.fetch_from_origin_id(
-                        output_arr[3].strip("'"))
+                        output_arr[3])
                     for i in range(4, 7):
                         output_arr[i] = input_arr[i - 2]
                     # n_faimily_member

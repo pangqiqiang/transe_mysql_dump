@@ -69,7 +69,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 mutex.release()
 
 
-start_time = time.clock()
+start_time = time.time()
 thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE, valid, MYDB0))
 thread1 = myThread(conver_file, (INPUT_FILE1, OUTPUT_FILE, valid, MYDB1))
 thread2 = myThread(conver_file, (INPUT_FILE2, OUTPUT_FILE, valid, MYDB2))
@@ -90,7 +90,7 @@ for t in threads:
 for t in threads:
     t.join()
 
-end_time = time.clock()
+end_time = time.time()
 
 time_elapse = (end_time - start_time)
 

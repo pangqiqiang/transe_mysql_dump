@@ -49,21 +49,21 @@ def conver_file(input_file, output_file, valid):
                     # uid(c_lender_id)
                     output_arr[3] = input_arr[3]
                     output_arr[2] = USER_PASSPORT_DB.fetch_from_salt(
-                        output_arr[3].strip("'"))
+                        output_arr[3])
                     # borrower_uid(c_borrower_id)
                     output_arr[5] = input_arr[2]
                     output_arr[4] = USER_PASSPORT_DB.fetch_from_salt(
-                        output_arr[5].strip("'"))
+                        output_arr[5])
                     # guarantee_uid(c_guarantee_id)
                     output_arr[7] = input_arr[4]
                     output_arr[6] = PRODUCT_BID_DB.fetch_from_origin_id(
-                        output_arr[7].strip("'"))
+                        output_arr[7])
                     # relation_type
                     output_arr[8] = "1"
                     # relation_id(c_relation_id)
                     output_arr[10] = input_arr[1]
                     output_arr[9] = BID_DB.fetch_from_origin_id(
-                        output_arr[10].strip("'"))
+                        output_arr[10])
                     output_arr[11:13] = ["NULL", "NULL"]
                     # guarantee_amount
                     try:
@@ -97,9 +97,9 @@ def conver_file(input_file, output_file, valid):
                 fout.write(pre + " " + post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_bid_list.sql",
             "/home/pangqiqiang/t_bid_list_out.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

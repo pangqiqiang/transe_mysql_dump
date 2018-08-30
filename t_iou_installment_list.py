@@ -59,7 +59,7 @@ def conver_file(input_file, output_file, valid):
                     # lender_uid,c_lender_id,guarantee_uid,c_guarantee_id
                     output_arr[7] = input_arr[4]
                     output_arr[6] = USER_PASSPORT_DB.fetch_from_salt(
-                        output_arr[5])
+                        output_arr[7])
                     output_arr[9] = input_arr[5]
                     output_arr[8] = USER_PASSPORT_DB.fetch_from_salt(
                         output_arr[9])
@@ -91,7 +91,7 @@ def conver_file(input_file, output_file, valid):
                     # Purpose,c_purpose
                     output_arr[27] = input_arr[19]
                     output_arr[26] = PURPOSE_TYPE_MAP.get(
-                        output_arr[27].strip("'"))
+                        output_arr[27])
                     output_arr[26] = 8 if output_arr[26] == None else output_arr[26]
                     # repay_time,t_repay_tm
                     output_arr[29] = input_arr[29]
@@ -118,9 +118,9 @@ def conver_file(input_file, output_file, valid):
                 fout.write(pre + " " + post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_iou_installment_list.sql",
             "/home/pangqiqiang/loan_installment_list_out.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

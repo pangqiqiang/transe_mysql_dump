@@ -50,9 +50,9 @@ def conver_file(input_file, output_file, valid):
                 fout.write(pre + " " + post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_iou_overdue_list_to_us.sql",
             "/home/pangqiqiang/t_iou_overdue_list_to_us_out.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

@@ -51,15 +51,15 @@ def conver_file(input_file, output_file, valid):
                     # loan_id(c_iou_id)
                     output_arr[3] = input_arr[1]
                     output_arr[2] = LOAN_DB.fetch_from_origin_id(
-                        output_arr[3].strip("'"))
+                        output_arr[3])
                     # loan_installment_list_id(c_iou_installment_list_id),
                     output_arr[5] = input_arr[2]
                     output_arr[4] = LOAN_INSTALLMENT_LIST_DB.fetch_from_origin_id(
-                        output_arr[5].strip("'"))
+                        output_arr[5])
                     # write_off_id(c_write_off_id,)
                     output_arr[7] = input_arr[3]
                     output_arr[6] = LOAN_WRITE_OFF_DB.fetch_from_origin_id(
-                        output_arr[7].strip("'"))
+                        output_arr[7])
                     # c_user_id
                     output_arr[8] = input_arr[4]
                     # lender_uid,(c_lender_id),borrower_uid
@@ -80,11 +80,11 @@ def conver_file(input_file, output_file, valid):
                     # confirm_id, c_confirm_id
                     output_arr[17] = input_arr[5]
                     output_arr[16] = USER_PASSPORT_DB.fetch_from_salt(
-                        output_arr[17].strip("'"))
+                        output_arr[17])
                     # trade_id(c_trade_id)
                     output_arr[19] = input_arr[9]
                     output_arr[18] = TRADE_DB.fetch_from_origin_id(
-                        output_arr[19].strip("'"))
+                        output_arr[19])
 
                     # repay_amount,amount,interest_amount,forfeit_amount,
                     # commission_amount,commission_party_amount
@@ -98,7 +98,7 @@ def conver_file(input_file, output_file, valid):
                     # collection_apply_id(c_collection_apply_id)
                     output_arr[29] = input_arr[17]
                     output_arr[28] = COLLECTION_APPLY_DB.fetch_from_origin_id(
-                        output_arr[29])
+                        output_arr[29].stip("'"))
                     # overdue_manage_amount,
                     try:
                         output_arr[30] = int(float(input_arr[18]) * 100 + 0.5)
@@ -141,9 +141,9 @@ def conver_file(input_file, output_file, valid):
                 fout.write(pre + " " + post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_iou_list_history.sql",
             "/home/pangqiqiang/t_iou_list_history_out.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

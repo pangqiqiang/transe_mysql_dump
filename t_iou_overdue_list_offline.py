@@ -37,7 +37,7 @@ def conver_file(input_file, output_file, valid):
                     # loan_installment_list_id[0](c_iou_installment_list_id)[1]
                     output_arr[1] = input_arr[1]
                     output_arr[0] = LOAN_INSTALLMENT_LIST_DB.fetch_from_origin_id(
-                        output_arr[1].strip("'"))
+                        output_arr[1])
                     output_arr[0] = "(" + str(output_arr[0])
                     # overdue_days,[2]
                     output_arr[2] = input_arr[4]
@@ -54,9 +54,9 @@ def conver_file(input_file, output_file, valid):
                 fout.write(pre + " " + post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_iou_overdue_list_offline.sql",
             "/home/pangqiqiang/t_iou_overdue_list_offline_out.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

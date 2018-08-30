@@ -40,7 +40,7 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 valid = "INSERT"
-seq_count = 1058377
+seq_count = 1059689
 
 # 定义线程类
 
@@ -86,12 +86,13 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 output_arr[3] = input_arr[2]
                 # loan_id
                 output_arr[5] = input_arr[3]
-                output_arr[4] = loan_db.fetch_from_origin_id(output_arr[5])
+                output_arr[4] = loan_db.fetch_from_origin_id(
+                    output_arr[5])
                 #,c_iou_id,borrower_uid,c_borrower_id,
                 # lender_uid,c_lender_id,guarantee_uid,c_guarantee_id
                 output_arr[7] = input_arr[4]
                 output_arr[6] = user_passport_db.fetch_from_salt(
-                    output_arr[5])
+                    output_arr[7])
                 output_arr[9] = input_arr[5]
                 output_arr[8] = user_passport_db.fetch_from_salt(
                     output_arr[9])
@@ -123,7 +124,7 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 # Purpose,c_purpose
                 output_arr[27] = input_arr[19]
                 output_arr[26] = PURPOSE_TYPE_MAP.get(
-                    output_arr[27].strip("'"))
+                    output_arr[27])
                 if output_arr[26] == None:
                     output_arr[26] = 8
                 # repay_time,t_repay_tm
@@ -153,7 +154,7 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
             mutex.release()
 
 
-start_time = time.clock()
+start_time = time.time()
 # 创建线程
 thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE,
                                  valid, LOAN_DB0, USER_PASSPORT_DB0))
@@ -180,5 +181,6 @@ for t in threads:
 for t in threads:
     t.join()
 
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

@@ -28,7 +28,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, output_file2, valid):
     # 维护自增id
-    seq_count = 7464314
+    seq_count = 7474655
     #json_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
@@ -63,15 +63,15 @@ def conver_file(input_file, output_file, output_file2, valid):
                         # borrower_uid,c_borrower_id
                         out_arr[3] = input_arr[1]
                         out_arr[2] = PASSWORD_DB.fetch_from_salt(
-                            out_arr[3].strip("'"))
+                            out_arr[3])
                         # lender_uid,c_lender_id
                         out_arr[5] = input_arr[2]
                         out_arr[4] = PASSWORD_DB.fetch_from_salt(
-                            out_arr[5].strip("'"))
+                            out_arr[5])
                         # guarantee_uid,c_guarantee_id
                         out_arr[7] = input_arr[3]
                         out_arr[6] = PASSWORD_DB.fetch_from_salt(
-                            out_arr[7].strip("'"))
+                            out_arr[7])
                         # service_amount
                         out_arr[8] = float_char_to_int(input_arr[5])
                         # guarantee_amount
@@ -93,7 +93,7 @@ def conver_file(input_file, output_file, output_file2, valid):
                         # return_overdue_manage_id,c_repay_forfeit_id
                         out_arr[18] = input_arr[17]
                         out_arr[17] = TRADE_DB.fetch_from_origin_id(
-                            out_arr[18].strip("'"))
+                            out_arr[18])
                         # get_amount
                         out_arr[19] = float_char_to_int(input_arr[18])
                         # got_amount
@@ -109,7 +109,7 @@ def conver_file(input_file, output_file, output_file2, valid):
                         # c_purpose,purpose_type
                         out_arr[26] = input_arr[20]
                         out_arr[25] = PURPOSE_TYPE_MAP.get(
-                            out_arr[26].strip("'"))
+                            out_arr[26])
                         out_arr[25] = 8 if out_arr[25] == None else out_arr[25]
                         # memo,repay_type,period,interest_rate,overdue_rate
                         for i in range(27, 32):
@@ -128,13 +128,13 @@ def conver_file(input_file, output_file, output_file2, valid):
                         # 根据source_type获取source_id
                         if int(out_arr[38]) == 0:
                             out_arr[39] = LOAN_OFFLINE_DB.fetch_from_origin_id(
-                                out_arr[40].strip("'"))
+                                out_arr[40])
                         elif int(out_arr[38]) == 1:
                             out_arr[39] = PRODUCT_BID_DB.fetch_from_origin_id(
-                                out_arr[40].strip("'"))
+                                out_arr[40])
                         else:
                             out_arr[39] = BID_DB.fetch_from_origin_id(
-                                out_arr[40].strip("'"))
+                                out_arr[40])
                         # valid_status,[41],end_status,[42]
                         out_arr[41], out_arr[42] = "b'0'", "b'0'"
                         # version_number,[43],local_agreement_status,[44],ecloud_agreement_status,[45]
@@ -159,9 +159,9 @@ def conver_file(input_file, output_file, output_file2, valid):
                     fout_json.write(JSON_PRE + json_post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_iou_ban.sql",
             "/home/pangqiqiang/loan_t_iou_ban_out.sql", "/home/pangqiqiang/t_iou_ban_json.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

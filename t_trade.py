@@ -48,7 +48,7 @@ def conver_file(input_file, output_file, valid):
                     # uid,c_user_id
                     out_arr[5] = input_arr[3]
                     out_arr[4] = PASSWORD_DB.fetch_from_salt(
-                        out_arr[5].strip("'"))
+                        out_arr[5])
                     # bank_account
                     out_arr[6] = input_arr[4]
                     # withdraw_type(int->bit)
@@ -61,14 +61,14 @@ def conver_file(input_file, output_file, valid):
                     out_arr[11] = float_char_to_int(input_arr[9])
                     #send_time, t_send_tm
                     out_arr[14] = input_arr[13]
-                    out_arr[13] = datetime2timestamp(output[14])
+                    out_arr[13] = datetime2timestamp(out_arr[14])
                     # b_valid
                     out_arr[15] = input_arr[10]
                     # b_rcv_bank
                     out_arr[16] = input_arr[11]
                     # receive_time,t_rcv_tm
                     out_arr[18] = input_arr[14]
-                    out_arr[17] = datetime2timestamp(output[18])
+                    out_arr[17] = datetime2timestamp(out_arr[18])
                     # trade_status
                     if (out_arr[16] == 0 and out_arr[14] != "NULL"):
                         out_arr[12] = 2
@@ -82,7 +82,7 @@ def conver_file(input_file, output_file, valid):
                     out_arr[19] = "b'" + input_arr[12] + "'"
                     # reconciliation_time,t_reconciliation_tm
                     out_arr[21] = input_arr[15].rstrip(")")
-                    out_arr[20] = datetime2timestamp(output[21])
+                    out_arr[20] = datetime2timestamp(out_arr[21])
                     # lease_status
                     out_arr[22] = "b'0'"
                     # create_time,update_time
@@ -94,9 +94,9 @@ def conver_file(input_file, output_file, valid):
                 fout.write(pre + " " + post + ";" + SEP)
 
 
-start_time = time.clock()
+start_time = time.time()
 conver_file("t_trade.sql",
             "/home/pangqiqiang/t_trade_out.sql", valid)
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

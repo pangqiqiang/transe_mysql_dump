@@ -65,7 +65,7 @@ mutex = threading.Lock()
 threads = []
 valid = "INSERT"
 # 维护自增id
-seq_count = 1047922
+seq_count = 1049173
 
 
 # 定义线程类
@@ -115,15 +115,15 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # borrower_uid,c_borrower_id
                 out_arr[3] = input_arr[1]
                 out_arr[2] = password_db.fetch_from_salt(
-                    out_arr[3].strip("'"))
+                    out_arr[3])
                 # lender_uid,c_lender_id
                 out_arr[5] = input_arr[2]
                 out_arr[4] = password_db.fetch_from_salt(
-                    out_arr[5].strip("'"))
+                    out_arr[5])
                 # guarantee_uid,c_guarantee_id
                 out_arr[7] = input_arr[3]
                 out_arr[6] = password_db.fetch_from_salt(
-                    out_arr[7].strip("'"))
+                    out_arr[7])
                 # service_amount
                 out_arr[8] = float_char_to_int(input_arr[5])
                 # guarantee_amount
@@ -145,7 +145,7 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # return_overdue_manage_id,c_repay_forfeit_id
                 out_arr[18] = input_arr[17]
                 out_arr[17] = trade_db.fetch_from_origin_id(
-                    out_arr[18].strip("'"))
+                    out_arr[18])
                 # get_amount
                 out_arr[19] = float_char_to_int(input_arr[18])
                 # got_amount
@@ -161,7 +161,7 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # c_purpose,purpose_type
                 out_arr[26] = input_arr[20]
                 out_arr[25] = PURPOSE_TYPE_MAP.get(
-                    out_arr[26].strip("'"))
+                    out_arr[26])
                 out_arr[25] = 8 if out_arr[25] == None else out_arr[25]
                 # memo,repay_type,period,interest_rate,overdue_rate
                 for i in range(27, 32):
@@ -180,13 +180,13 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # 根据source_type获取source_id
                 if int(out_arr[38]) == 0:
                     out_arr[39] = loan_offline_db.fetch_from_origin_id(
-                        out_arr[40].strip("'"))
+                        out_arr[40])
                 elif int(out_arr[38]) == 1:
                     out_arr[39] = product_bid_db.fetch_from_origin_id(
-                        out_arr[40].strip("'"))
+                        out_arr[40])
                 else:
                     out_arr[39] = bid_db.fetch_from_origin_id(
-                        out_arr[40].strip("'"))
+                        out_arr[40])
                 # valid_status,[41],end_status,[42]
                 out_arr[41], out_arr[42] = "b'1'", "b'1'"
                 # version_number,[43],local_agreement_status,[44],ecloud_agreement_status,[45]
@@ -215,7 +215,7 @@ def conver_file(input_file, output_file, output_file2, valid,
             mutex.release()
 
 
-start_time = time.clock()
+start_time = time.time()
 # 创建线程
 thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
                                  PASSWORD_DB0, TRADE_DB0, LOAN_OFFLINE_DB0, PRODUCT_BID_DB0, BID_DB0))
@@ -242,6 +242,6 @@ for t in threads:
 for t in threads:
     t.join()
 
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

@@ -4,7 +4,7 @@
 import torndb_handler
 
 HOST = "10.111.30.20:3306"
-DATABASE = "jjd_9th"
+DATABASE = "jjd_10th"
 USER = "dev"
 PASS = "KRkFcVCbopZbS8R7"
 

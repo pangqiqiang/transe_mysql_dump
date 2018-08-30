@@ -20,7 +20,7 @@ class MyDB:
         if salt == "NULL" or len(salt) == 0:
             return "NULL"
         sql = "SELECT uid FROM " + self.tablename + " WHERE salt=%s"
-        res = self.db.query(sql, salt)
+        res = self.db.query(sql, salt.strip("'"))
         res = res[0].uid if res else "NULL"
         return res
 
@@ -28,7 +28,7 @@ class MyDB:
         if origin_id == "NULL" or len(origin_id) == 0:
             return "NULL"
         sql = "SELECT id FROM " + self.tablename + " WHERE original_id=%s"
-        res = self.db.query(sql, origin_id)
+        res = self.db.query(sql, origin_id.strip("'"))
         res = res[0].id if res else "NULL"
         return res
 

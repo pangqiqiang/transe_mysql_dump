@@ -31,7 +31,7 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 # 维护自增id
-seq_count = 100
+seq_count = 13273
 
 # 定义线程类
 
@@ -80,7 +80,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 # uid,c_user_id
                 out_arr[5] = input_arr[3]
                 out_arr[4] = mydb.fetch_from_salt(
-                    out_arr[5].strip("'"))
+                    out_arr[5])
                 # bank_account
                 out_arr[6] = input_arr[4]
                 # withdraw_type(int->bit)
@@ -128,7 +128,7 @@ def conver_file(input_file, output_file, valid, mydb):
             mutex.release()
 
 
-start_time = time.clock()
+start_time = time.time()
 # 创建线程
 thread0 = myThread(
     conver_file, (INPUT_FILE0, OUTPUT_FILE, valid, PASSWORD_DB0))
@@ -156,6 +156,6 @@ for t in threads:
 for t in threads:
     t.join()
 
-end_time = time.clock()
+end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)
