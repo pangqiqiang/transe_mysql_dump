@@ -4,6 +4,19 @@
 import time
 import re
 from collections import deque
+import os
+
+SEP = os.linesep
+
+# 打开未关闭文件对象线程锁失效，必须关闭重新打开
+
+
+def write_lines_in_file(filename, line):
+    fobj = open(filename, "a")
+    try:
+        fobj.write(line + SEP)
+    finally:
+        fobj.close()
 
 
 def parse_sql_fields(str):
@@ -86,6 +99,12 @@ def datetime2timestamp(date):
         return "'" + date + "'"
     except ValueError:
         return "NULL"
+
+
+def get_cur_time_str():
+    time_str = time.strftime('%Y-%m-%d %H:%M:%S',
+                             time.localtime(time.time()))
+    return "'" + time_str + "'"
 
 
 if __name__ == "__main__":

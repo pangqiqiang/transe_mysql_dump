@@ -18,7 +18,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     with open(input_file, 'r') as fin:
-        with open(output_file, 'a') as fout:
+        with open(output_file, 'w') as fout:
             for line in fin:
                 if not line.startswith(valid):
                     continue
@@ -28,7 +28,7 @@ def conver_file(input_file, output_file, valid):
                     continue
                 post = line[(pre_pos + 1):]
                 pre = line[:(pre_pos + 1 + len("VALUES"))].replace(
-                    "t_iou_overdue_list_to_us","loan_overdue_manage_fee_list")
+                    "t_iou_overdue_list_to_us", "loan_overdue_manage_fee_list")
                 new_values = []
                 for item in gmatch(line, "(", ")", pre_pos):
                     item = item.strip(",")

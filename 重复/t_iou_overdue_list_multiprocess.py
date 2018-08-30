@@ -8,6 +8,35 @@ import iter_gmatch
 import torndb_handler
 
 
+class MyDB:
+    def __init__(self, host, database, user, password, tablename, connect_timeout=10):
+        try:
+            self.db = torndb.Connection(host=host,
+                                        database=database,
+                                        user=user,
+                                        password=password
+                                        )
+        except Exception as e:
+            print(str(e))
+        self.tablename = tablename
+
+    def fetch_from_salt(self, salt):
+        if salt == "NULL" or len(salt) == 0:
+            return "NULL"
+        sql = "SELECT uid FROM " + self.tablename + " WHERE salt=%s"
+        res = self.db.query(sql, salt)
+        res = res[0].uid if res else "NULL"
+        return res
+
+    def fetch_from_origin_id(self, origin_id):
+        if origin_id == "NULL" or len(origin_id) == 0:
+            return "NULL"
+        sql = "SELECT id FROM " + self.tablename + " WHERE original_id=%s"
+        res = self.db.query(sql, origin_id)
+        res = res[0].id if res else "NULL"
+        return res
+
+
 OUTPUT_FILE = "/tmp/t_iou_overdue_list_out2.sql"
 INPUT_FILE0 = "t_iou_overdue_list000"
 INPUT_FILE1 = "t_iou_overdue_list001"
@@ -45,42 +74,39 @@ valid = "INSERT"
 lock = Lock()
 
 # 定义进程函数
-# 尝试用闭包规避非模块顶级类无法序列化问题
 
 
-def gen_process(mydb):
-    def conver_file(input_file, output_file, valid):
-        with open(input_file, 'r') as fin:
-            with open(output_file, 'a') as fout:
-                for line in fin:
-                    if not line.startswith(valid):
-                        continue
-                    line.rstrip()
-                    pre_pos = line.find("VALUES") + len("VALUES")
-                    if pre_pos == -1:
-                        continue
-                    post = line[(pre_pos + 1):]
-                    pre = line[:(pre_pos + 1)]
-                    new_values = []
-                    for item in gmatch(line, "(", ")", pre_pos):
-                        item = item.strip(",")
-                        temp_arr = item.split(",")
-                        origin_id = temp_arr[0].lstrip("(")
-                        new_id = mydb.fetch_id(origin_id.replace("'", ""))
-                        # mutex.release()
-                        temp_arr[2] = str(int(float(temp_arr[2]) * 100))
-                        temp_arr[3] = str(int(float(temp_arr[3]) * 100))
-                        del temp_arr[1]
-                        temp_arr.insert(0, "(" + str(new_id))
-                        temp_arr[1] = origin_id
-                        temp_arr[-1] = temp_arr[-1].rstrip(")")
-                        temp_arr.append("'0')")
-                        new_values.append(",".join(temp_arr))
-                    post = ",".join(new_values)
-                    lock.acquire()
-                    fout.write(pre + " " + post + SEP)
-                    lock.release()
-    return conver_file
+def conver_file(input_file, output_file, valid, mydb):
+    with open(input_file, 'r') as fin:
+        with open(output_file, 'a') as fout:
+            for line in fin:
+                if not line.startswith(valid):
+                    continue
+                line.rstrip()
+                pre_pos = line.find("VALUES") + len("VALUES")
+                if pre_pos == -1:
+                    continue
+                post = line[(pre_pos + 1):]
+                pre = line[:(pre_pos + 1)]
+                new_values = []
+                for item in gmatch(line, "(", ")", pre_pos):
+                    item = item.strip(",")
+                    temp_arr = item.split(",")
+                    origin_id = temp_arr[0].lstrip("(")
+                    new_id = mydb.fetch_id(origin_id.replace("'", ""))
+                    # mutex.release()
+                    temp_arr[2] = str(int(float(temp_arr[2]) * 100))
+                    temp_arr[3] = str(int(float(temp_arr[3]) * 100))
+                    del temp_arr[1]
+                    temp_arr.insert(0, "(" + str(new_id))
+                    temp_arr[1] = origin_id
+                    temp_arr[-1] = temp_arr[-1].rstrip(")")
+                    temp_arr.append("'0')")
+                    new_values.append(",".join(temp_arr))
+                post = ",".join(new_values)
+                lock.acquire()
+                fout.write(pre + " " + post + SEP)
+                lock.release()
 
 
 start_time = time.clock()

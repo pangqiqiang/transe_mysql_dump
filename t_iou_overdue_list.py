@@ -7,13 +7,7 @@ import threading
 import os
 import time
 from common_func import *
-import torndb_handler
-
-HOST = "10.111.30.20:3306"
-DATABASE = "jjd_9th"
-USER = "dev"
-PASS = "KRkFcVCbopZbS8R7"
-
+import multi_thread_dbs
 
 OUTPUT_FILE = "/home/pangqiqiang/t_iou_overdue_list_out.sql"
 INPUT_FILE0 = "t_iou_overdue_list000"
@@ -24,21 +18,11 @@ INPUT_FILE4 = "t_iou_overdue_list004"
 SEP = os.linesep
 
 # 为了多线程加速采用多个db对象查询
-MYDB0 = torndb_handler.MyDB(host=HOST, database=DATABASE,
-                            user=USER, password=PASS,
-                            tablename="loan_installment_list")
-MYDB1 = torndb_handler.MyDB(host=HOST, database=DATABASE,
-                            user=USER, password=PASS,
-                            tablename="loan_installment_list")
-MYDB2 = torndb_handler.MyDB(host=HOST, database=DATABASE,
-                            user=USER, password=PASS,
-                            tablename="loan_installment_list")
-MYDB3 = torndb_handler.MyDB(host=HOST, database=DATABASE,
-                            user=USER, password=PASS,
-                            tablename="loan_installment_list")
-MYDB4 = torndb_handler.MyDB(host=HOST, database=DATABASE,
-                            user=USER, password=PASS,
-                            tablename="loan_installment_list")
+MYDB0 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB0
+MYDB1 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB1
+MYDB2 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB2
+MYDB3 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB3
+MYDB4 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB4
 # 导入迭代器函数
 gmatch = iter_gmatch.gmatch
 # 数据有效行必须以INSERT 开头
@@ -62,39 +46,38 @@ class myThread(threading.Thread):
 
 def conver_file(input_file, output_file, valid, mydb):
     with open(input_file, 'r') as fin:
-        with open(output_file, 'a') as fout:
-            for line in fin:
-                if not line.startswith(valid):
-                    continue
-                line = unescape_quote(line)
-                pre_pos = line.find("VALUES")
-                if pre_pos == -1:
-                    continue
-                post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))].replace("t_iou_overdue_list",
-                                                                   "loan_overdue_forfeit_list")
-                new_values = []
-                for item in gmatch(line, "(", "),", pre_pos):
-                    item = item.strip(",")
-                    temp_arr = parse_sql_fields(item)
-                    origin_id = temp_arr[0].lstrip("(")
-                    print(origin_id)
-                    mutex.acquire()  # 公用dbclient的时候必须加锁
-                    new_id = mydb.fetch_from_origin_id(
-                        origin_id.replace("'", ""))
-                    mutex.release()
-                    temp_arr[2] = str(int(float(temp_arr[2]) * 100 + 0.5))
-                    temp_arr[3] = str(int(float(temp_arr[3]) * 100 + 0.5))
-                    del temp_arr[1]
-                    temp_arr.insert(0, "(" + str(new_id))
-                    temp_arr[1] = origin_id
-                    temp_arr[-1] = temp_arr[-1].rstrip(")")
-                    temp_arr.append("b'0')")
-                    new_values.append(",".join(temp_arr))
-                post = ",".join(new_values)
-                mutex.acquire()
-                fout.write(pre + " " + post + ";" + SEP)
-                mutex.release()
+        for line in fin:
+            if not line.startswith(valid):
+                continue
+            line = unescape_quote(line)
+            pre_pos = line.find("VALUES")
+            if pre_pos == -1:
+                continue
+            post = line[(pre_pos + 1):]
+            pre = line[:(pre_pos + 1 + len("VALUES"))].replace("t_iou_overdue_list",
+                                                               "loan_overdue_forfeit_list")
+            new_values = []
+            for item in gmatch(line, "(", "),", pre_pos):
+                item = item.strip(",")
+                temp_arr = parse_sql_fields(item)
+                origin_id = temp_arr[0].lstrip("(")
+                # print(origin_id)
+                # mutex.acquire()  # 公用dbclient的时候必须加锁
+                new_id = mydb.fetch_from_origin_id(
+                    origin_id.replace("'", ""))
+                # mutex.release()
+                temp_arr[2] = str(int(float(temp_arr[2]) * 100 + 0.5))
+                temp_arr[3] = str(int(float(temp_arr[3]) * 100 + 0.5))
+                del temp_arr[1]
+                temp_arr.insert(0, "(" + str(new_id))
+                temp_arr[1] = origin_id
+                temp_arr[-1] = temp_arr[-1].rstrip(")")
+                temp_arr.append("b'0')")
+                new_values.append(",".join(temp_arr))
+            post = ",".join(new_values)
+            mutex.acquire()
+            write_lines_in_file(output_file, pre + " " + post + ";")
+            mutex.release()
 
 
 start_time = time.clock()

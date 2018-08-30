@@ -16,7 +16,7 @@ TRADE_DB = common_dbs.TRADE_DB
 LOAN_OFFLINE_DB = common_dbs.LOAN_OFFLINE_DB
 PRODUCT_BID_DB = common_dbs.PRODUCT_BID_DB
 BID_DB = common_dbs.BID_DB
-LOAN_DB = common_dbs.LOAN_DB
+
 # 存入jsonsql
 JSON_PRE = "INSERT INTO TEMP_JSON VALUES "
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
@@ -150,8 +150,6 @@ def conver_file(input_file, output_file, output_file2, valid):
                         out_arr[49] = "NULL" + ")"
                         for i in range(38, len(input_arr)):
                             json_arr.append(input_arr[i])
-                        json_arr[-1] = json_arr[-1].strip(")")
-                        json_arr.append("NULL" + ")")
                         new_values.append(
                             ",".join([str(i) for i in out_arr]))
                         json_values.append(",".join(json_arr))
