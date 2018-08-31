@@ -44,7 +44,7 @@ def conver_file(input_file, output_file, valid):
                     # amount
                     output_arr[3] = int(float(input_arr[3]) * 100 + 0.5)
                     # forfeit_amount,[4]
-                    output_arr[4] = input_arr[5]
+                    output_arr[4] = int(float(input_arr[5]) * 100 + 0.5)
                     # create_time,[5]
                     output_arr[5] = input_arr[6].strip(")")
                     # 处理del

@@ -113,8 +113,8 @@ def conver_file(input_file, output_file, valid):
                     output_arr[32] = input_arr[21]
                     # offline_pay_method(c_offline_pay_method)
                     output_arr[34] = input_arr[25]
-                    output_arr[33] = OFFLINE_PAY_METHOD_MAP.get(output_arr[34].strip(
-                        "'"))
+                    output_arr[33] = get_from_map(
+                        OFFLINE_PAY_METHOD_MAP, output_arr[34])
                     if output_arr[33] == None:
                         output_arr[33] = 3
                     # valid_status

@@ -90,8 +90,8 @@ def conver_file(input_file, output_file, valid):
                     output_arr[25] = float_char_to_int(input_arr[13])
                     # Purpose,c_purpose
                     output_arr[27] = input_arr[19]
-                    output_arr[26] = PURPOSE_TYPE_MAP.get(
-                        output_arr[27])
+                    output_arr[26] = get_from_map(
+                        PURPOSE_TYPE_MAP, output_arr[27])
                     output_arr[26] = 8 if output_arr[26] == None else output_arr[26]
                     # repay_time,t_repay_tm
                     output_arr[29] = input_arr[29]

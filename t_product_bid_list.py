@@ -20,7 +20,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     # 维护自增id
-    seq_count = 152
+    seq_count = 824
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -83,7 +83,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[20] = input_arr[9]
                     # reconciliation_time(t_reconciliation_tm)
                     output_arr[22] = input_arr[13].rstrip(")")
-                    output_arr[21] = datetime2timestamp(output_arr[22])
+                    output_arr[21] = datetime2int(output_arr[22])
                     # create_time
                     output_arr[23] = datetime2timestamp(input_arr[11])
                     # update_time

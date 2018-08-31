@@ -101,18 +101,17 @@ def conver_file(input_file, output_file, valid):
                     out_arr[24] = float_char_to_int(input_arr[11])
                     # c_purpose,purpose_type
                     out_arr[26] = input_arr[20]
-                    out_arr[25] = PURPOSE_TYPE_MAP.get(
-                        out_arr[26])
+                    out_arr[25] = get_from_map(PURPOSE_TYPE_MAP, out_arr[26])
                     out_arr[25] = 8 if out_arr[25] == None else out_arr[25]
                     # memo,repay_type,period,interest_rate,overdue_rate
                     for i in range(27, 32):
                         out_arr[i] = input_arr[i - 6]
                     # borrow_time[32](t_borrow_tm)[33]
                     out_arr[33] = input_arr[26]
-                    out_arr[32] = datetime2timestamp(out_arr[33])
+                    out_arr[32] = date2timestamp(out_arr[33])
                     # repay_time[34](t_repay_tm)[35]
                     out_arr[35] = input_arr[27]
-                    out_arr[34] = datetime2timestamp(out_arr[35])
+                    out_arr[34] = date2timestamp(out_arr[35])
                     # online_status,[36],# pic_list,[37],source_type,[38]
                     for i in range(36, 39):
                         out_arr[i] = input_arr[i - 8]
@@ -123,10 +122,10 @@ def conver_file(input_file, output_file, valid):
                         out_arr[39] = LOAN_OFFLINE_DB.fetch_from_origin_id(
                             out_arr[40])
                     elif int(out_arr[38]) == 1:
-                        out_arr[39] = PRODUCT_BID_DB.fetch_from_origin_id(
+                        out_arr[39] = BID_DB.fetch_from_origin_id(
                             out_arr[40])
                     else:
-                        out_arr[39] = BID_DB.fetch_from_origin_id(
+                        out_arr[39] = PRODUCT_BID_DB.fetch_from_origin_id(
                             out_arr[40])
                     # valid_status,[41],end_status,[42]
                     out_arr[41], out_arr[42] = "b'1'", "b'0'"

@@ -93,14 +93,14 @@ def conver_file(input_file, output_file, valid, mydb):
                 out_arr[11] = float_char_to_int(input_arr[9])
                 #send_time, t_send_tm
                 out_arr[14] = input_arr[13]
-                out_arr[13] = datetime2timestamp(out_arr[14])
+                out_arr[13] = datetime2int(out_arr[14])
                 # b_valid
                 out_arr[15] = input_arr[10]
                 # b_rcv_bank
                 out_arr[16] = input_arr[11]
                 # receive_time,t_rcv_tm
                 out_arr[18] = input_arr[14]
-                out_arr[17] = datetime2timestamp(out_arr[18])
+                out_arr[17] = datetime2int(out_arr[18])
                 # trade_status
                 if (out_arr[16] == 0 and out_arr[14] != "NULL"):
                     out_arr[12] = 2
@@ -114,7 +114,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 out_arr[19] = "b'" + input_arr[12] + "'"
                 # reconciliation_time,t_reconciliation_tm
                 out_arr[21] = input_arr[15]
-                out_arr[20] = datetime2timestamp(out_arr[21])
+                out_arr[20] = datetime2int(out_arr[21])
                 # lease_status
                 out_arr[22] = "b'0'"
                 # create_time,update_time

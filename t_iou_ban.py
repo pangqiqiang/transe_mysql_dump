@@ -108,8 +108,8 @@ def conver_file(input_file, output_file, output_file2, valid):
                         out_arr[24] = float_char_to_int(input_arr[11])
                         # c_purpose,purpose_type
                         out_arr[26] = input_arr[20]
-                        out_arr[25] = PURPOSE_TYPE_MAP.get(
-                            out_arr[26])
+                        out_arr[25] = get_from_map(
+                            PURPOSE_TYPE_MAP, out_arr[26])
                         out_arr[25] = 8 if out_arr[25] == None else out_arr[25]
                         # memo,repay_type,period,interest_rate,overdue_rate
                         for i in range(27, 32):

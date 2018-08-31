@@ -77,6 +77,7 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 input_arr = parse_sql_fields(item)
                 mutex.acquire()
                 seq_count += 1
+                # print(seq_count)
                 output_arr[0] = "(" + str(seq_count)
                 mutex.release()
                 # Original_id,[1],cur_period,total_period,
@@ -123,8 +124,7 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 output_arr[25] = float_char_to_int(input_arr[13])
                 # Purpose,c_purpose
                 output_arr[27] = input_arr[19]
-                output_arr[26] = PURPOSE_TYPE_MAP.get(
-                    output_arr[27])
+                output_arr[26] = get_from_map(PURPOSE_TYPE_MAP, output_arr[27])
                 if output_arr[26] == None:
                     output_arr[26] = 8
                 # repay_time,t_repay_tm

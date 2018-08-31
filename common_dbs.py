@@ -5,7 +5,7 @@ import torndb_handler
 
 HOST = "10.111.30.20:3306"
 DATABASE = "jjd_10th"
-USER = "dev"
+USER = "op"
 PASS = "KRkFcVCbopZbS8R7"
 
 LOAN_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,

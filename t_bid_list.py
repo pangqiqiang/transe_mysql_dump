@@ -86,7 +86,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[20] = input_arr[11]
                     # reconciliation_time(t_reconciliation_tm)
                     output_arr[22] = input_arr[15].rstrip(")")
-                    output_arr[21] = datetime2timestamp(output_arr[22])
+                    output_arr[21] = datetime2int(output_arr[22])
                     # create_time
                     output_arr[23] = datetime2timestamp(input_arr[13])
                     # update_time

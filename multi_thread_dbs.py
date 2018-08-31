@@ -5,7 +5,7 @@ import torndb_handler
 # 导入数据库类
 HOST = "10.111.30.20:3306"
 DATABASE = "jjd_10th"
-USER = "dev"
+USER = "op"
 PASS = "KRkFcVCbopZbS8R7"
 # 尽量加快，采用一个线程一个实例
 LOAN_DB0 = torndb_handler.MyDB(host=HOST, database=DATABASE,
@@ -26,21 +26,35 @@ LOAN_DB4 = torndb_handler.MyDB(host=HOST, database=DATABASE,
 LOAN_INSTALLMENT_LIST_DB0 = torndb_handler.MyDB(host=HOST, database=DATABASE,
                                                 user=USER, password=PASS,
                                                 tablename="loan_installment_list")
-
 LOAN_INSTALLMENT_LIST_DB1 = torndb_handler.MyDB(host=HOST, database=DATABASE,
                                                 user=USER, password=PASS,
                                                 tablename="loan_installment_list")
-
 LOAN_INSTALLMENT_LIST_DB2 = torndb_handler.MyDB(host=HOST, database=DATABASE,
                                                 user=USER, password=PASS,
                                                 tablename="loan_installment_list")
-
 LOAN_INSTALLMENT_LIST_DB3 = torndb_handler.MyDB(host=HOST, database=DATABASE,
                                                 user=USER, password=PASS,
                                                 tablename="loan_installment_list")
 LOAN_INSTALLMENT_LIST_DB4 = torndb_handler.MyDB(host=HOST, database=DATABASE,
                                                 user=USER, password=PASS,
                                                 tablename="loan_installment_list")
+LOAN_INSTALLMENT_LIST_DB5 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                                user=USER, password=PASS,
+                                                tablename="loan_installment_list")
+LOAN_INSTALLMENT_LIST_DB6 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                                user=USER, password=PASS,
+                                                tablename="loan_installment_list")
+LOAN_INSTALLMENT_LIST_DB7 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                                user=USER, password=PASS,
+                                                tablename="loan_installment_list")
+LOAN_INSTALLMENT_LIST_DB8 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                                user=USER, password=PASS,
+                                                tablename="loan_installment_list")
+LOAN_INSTALLMENT_LIST_DB9 = torndb_handler.MyDB(host=HOST, database=DATABASE,
+                                                user=USER, password=PASS,
+                                                tablename="loan_installment_list")
+
+
 LOAN_WRITE_OFF_DB0 = torndb_handler.MyDB(host=HOST, database=DATABASE,
                                          user=USER, password=PASS,
                                          tablename="loan_write_off")

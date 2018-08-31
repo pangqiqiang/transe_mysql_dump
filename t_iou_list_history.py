@@ -25,7 +25,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     # 维护自增id
-    seq_count = 186034
+    seq_count = 187281
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -98,7 +98,7 @@ def conver_file(input_file, output_file, valid):
                     # collection_apply_id(c_collection_apply_id)
                     output_arr[29] = input_arr[17]
                     output_arr[28] = COLLECTION_APPLY_DB.fetch_from_origin_id(
-                        output_arr[29].stip("'"))
+                        output_arr[29])
                     # overdue_manage_amount,
                     try:
                         output_arr[30] = int(float(input_arr[18]) * 100 + 0.5)
@@ -113,8 +113,8 @@ def conver_file(input_file, output_file, valid):
                     output_arr[32] = input_arr[21]
                     # offline_pay_method(c_offline_pay_method)
                     output_arr[34] = input_arr[25]
-                    output_arr[33] = OFFLINE_PAY_METHOD_MAP.get(output_arr[34].strip(
-                        "'"))
+                    output_arr[33] = get_from_map(
+                        OFFLINE_PAY_METHOD_MAP, output_arr[34])
                     if output_arr[33] == None:
                         output_arr[33] = 3
                     # valid_status

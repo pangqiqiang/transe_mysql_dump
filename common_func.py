@@ -19,6 +19,10 @@ def write_lines_in_file(filename, line):
         fobj.close()
 
 
+def get_from_map(map, item):
+    return map.get(str(item).strip("'"))
+
+
 def parse_sql_fields(str):
     origin_arr = str.split(",")
     dup = deque(origin_arr[::])

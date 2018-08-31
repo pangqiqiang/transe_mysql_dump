@@ -15,7 +15,11 @@ INPUT_FILE1 = "t_iou_overdue_list001"
 INPUT_FILE2 = "t_iou_overdue_list002"
 INPUT_FILE3 = "t_iou_overdue_list003"
 INPUT_FILE4 = "t_iou_overdue_list004"
-SEP = os.linesep
+INPUT_FILE5 = "t_iou_overdue_list005"
+INPUT_FILE6 = "t_iou_overdue_list006"
+INPUT_FILE7 = "t_iou_overdue_list007"
+INPUT_FILE8 = "t_iou_overdue_list008"
+INPUT_FILE9 = "t_iou_overdue_list009"
 
 # 为了多线程加速采用多个db对象查询
 MYDB0 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB0
@@ -23,6 +27,11 @@ MYDB1 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB1
 MYDB2 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB2
 MYDB3 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB3
 MYDB4 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB4
+MYDB5 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB5
+MYDB6 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB6
+MYDB7 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB7
+MYDB8 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB8
+MYDB9 = multi_thread_dbs.LOAN_INSTALLMENT_LIST_DB9
 # 导入迭代器函数
 gmatch = iter_gmatch.gmatch
 # 数据有效行必须以INSERT 开头
@@ -87,14 +96,11 @@ thread1 = myThread(conver_file, (INPUT_FILE1, OUTPUT_FILE, valid, MYDB1))
 thread2 = myThread(conver_file, (INPUT_FILE2, OUTPUT_FILE, valid, MYDB2))
 thread3 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, valid, MYDB3))
 thread4 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, valid, MYDB4))
-
-
-# 开始线程
-thread0.start()
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
+thread5 = myThread(conver_file, (INPUT_FILE2, OUTPUT_FILE, valid, MYDB5))
+thread6 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, valid, MYDB6))
+thread7 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, valid, MYDB7))
+thread8 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, valid, MYDB8))
+thread9 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, valid, MYDB9))
 
 # 添加线程到线程列表
 threads.append(thread0)
@@ -102,9 +108,17 @@ threads.append(thread1)
 threads.append(thread2)
 threads.append(thread3)
 threads.append(thread4)
+threads.append(thread5)
+threads.append(thread6)
+threads.append(thread7)
+threads.append(thread8)
+threads.append(thread9)
 
+# 开始所有线程完成
+for t in threads:
+    t.start()
 
-# 等待所有线程完成
+ # 等待所有线程完成
 for t in threads:
     t.join()
 
