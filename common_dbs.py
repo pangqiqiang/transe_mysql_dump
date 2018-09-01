@@ -2,11 +2,7 @@
 #-*-coding:utf-8-*-
 
 import torndb_handler
-
-HOST = "10.111.30.20:3306"
-DATABASE = "jjd_10th"
-USER = "op"
-PASS = "KRkFcVCbopZbS8R7"
+from config import *
 
 LOAN_DB = torndb_handler.MyDB(host=HOST, database=DATABASE,
                               user=USER, password=PASS,

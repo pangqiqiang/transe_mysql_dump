@@ -5,10 +5,9 @@ import time
 import re
 from collections import deque
 import os
+import threading
 
 SEP = os.linesep
-
-# 打开未关闭文件对象线程锁失效，必须关闭重新打开
 
 
 def write_lines_in_file(filename, line):
@@ -106,8 +105,10 @@ def datetime2timestamp(date):
 
 
 def get_cur_time_str():
+    Lock.acquire()
     time_str = time.strftime('%Y-%m-%d %H:%M:%S',
                              time.localtime(time.time()))
+    Lock.release()
     return "'" + time_str + "'"
 
 

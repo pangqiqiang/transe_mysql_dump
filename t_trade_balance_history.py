@@ -68,7 +68,9 @@ def conver_file(input_file, output_file, valid):
                     out_arr[16] = "0"
                     # receive_time,t_rcv_tm
                     out_arr[18] = input_arr[6]
+                    mutex.acquire()
                     out_arr[17] = datetime2int(out_arr[18])
+                    mutex.release()
                     # trade_status
                     if (out_arr[15] == 1 and out_arr[18] != "NULL"):
                         out_arr[12] = 3
@@ -80,7 +82,9 @@ def conver_file(input_file, output_file, valid):
                     out_arr[19] = "b'" + input_arr[5] + "'"
                     # reconciliation_time,t_reconciliation_tm
                     out_arr[21] = input_arr[7]
+                    mutex.acquire()
                     out_arr[20] = datetime2int(out_arr[21])
+                    mutex.release()
                     # lease_status
                     out_arr[22] = "b'0'"
                     # create_time,update_time

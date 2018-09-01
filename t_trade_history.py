@@ -16,6 +16,11 @@ INPUT_FILE1 = "t_trade_history001"
 INPUT_FILE2 = "t_trade_history002"
 INPUT_FILE3 = "t_trade_history003"
 INPUT_FILE4 = "t_trade_history004"
+INPUT_FILE5 = "t_trade_history005"
+INPUT_FILE6 = "t_trade_history006"
+INPUT_FILE7 = "t_trade_history007"
+INPUT_FILE8 = "t_trade_history008"
+INPUT_FILE9 = "t_trade_history009"
 
 # 导入数据库类
 PASSWORD_DB0 = multi_thread_dbs.USER_PASSPORT_DB0
@@ -23,6 +28,11 @@ PASSWORD_DB1 = multi_thread_dbs.USER_PASSPORT_DB1
 PASSWORD_DB2 = multi_thread_dbs.USER_PASSPORT_DB2
 PASSWORD_DB3 = multi_thread_dbs.USER_PASSPORT_DB3
 PASSWORD_DB4 = multi_thread_dbs.USER_PASSPORT_DB4
+PASSWORD_DB5 = multi_thread_dbs.USER_PASSPORT_DB5
+PASSWORD_DB6 = multi_thread_dbs.USER_PASSPORT_DB6
+PASSWORD_DB7 = multi_thread_dbs.USER_PASSPORT_DB7
+PASSWORD_DB8 = multi_thread_dbs.USER_PASSPORT_DB8
+PASSWORD_DB9 = multi_thread_dbs.USER_PASSPORT_DB9
 
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
@@ -140,13 +150,27 @@ thread3 = myThread(
     conver_file, (INPUT_FILE3, OUTPUT_FILE, valid, PASSWORD_DB3))
 thread4 = myThread(
     conver_file, (INPUT_FILE4, OUTPUT_FILE, valid, PASSWORD_DB4))
-
+thread5 = myThread(
+    conver_file, (INPUT_FILE5, OUTPUT_FILE, valid, PASSWORD_DB5))
+thread6 = myThread(
+    conver_file, (INPUT_FILE6, OUTPUT_FILE, valid, PASSWORD_DB6))
+thread7 = myThread(
+    conver_file, (INPUT_FILE7, OUTPUT_FILE, valid, PASSWORD_DB7))
+thread8 = myThread(
+    conver_file, (INPUT_FILE8, OUTPUT_FILE, valid, PASSWORD_DB8))
+thread9 = myThread(
+    conver_file, (INPUT_FILE9, OUTPUT_FILE, valid, PASSWORD_DB9))
 # 添加线程到线程列表
 threads.append(thread0)
 threads.append(thread1)
 threads.append(thread2)
 threads.append(thread3)
 threads.append(thread4)
+threads.append(thread5)
+threads.append(thread6)
+threads.append(thread7)
+threads.append(thread8)
+threads.append(thread9)
 
 # 启动进程
 for t in threads:

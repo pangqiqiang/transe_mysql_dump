@@ -116,10 +116,10 @@ def conver_file(input_file, output_file, output_file2, valid):
                             out_arr[i] = input_arr[i - 6]
                         # borrow_time[32](t_borrow_tm)[33]
                         out_arr[33] = input_arr[26]
-                        out_arr[32] = date2timestamp(out_arr[33])
+                        out_arr[32] = date2int(out_arr[33])
                         # repay_time[34](t_repay_tm)[35]
                         out_arr[35] = input_arr[27]
-                        out_arr[34] = date2timestamp(out_arr[35])
+                        out_arr[34] = date2int(out_arr[35])
                         # online_status,[36],# pic_list,[37],source_type,[38]
                         for i in range(36, 39):
                             out_arr[i] = input_arr[i - 8]

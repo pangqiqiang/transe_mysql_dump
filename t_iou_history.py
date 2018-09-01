@@ -7,50 +7,21 @@ import os
 import time
 import iter_gmatch
 from common_func import *
-import multi_thread_dbs
+from multi_thread_dbs import *
 
 
-SEP = os.linesep
 OUTPUT_FILE = "/home/pangqiqiang/loan_t_iou_history_out.sql"
-OUTPUT_JSON_FILE = "/home/pangqiqiang/t_iou_histoy_json.sql"
+OUTPUT_JSON_FILE = "/home/pangqiqiang/t_iou_history_json.sql"
 INPUT_FILE0 = "t_iou_history000"
 INPUT_FILE1 = "t_iou_history001"
 INPUT_FILE2 = "t_iou_history002"
 INPUT_FILE3 = "t_iou_history003"
 INPUT_FILE4 = "t_iou_history004"
-
-
-# 导入数据库类
-PASSWORD_DB0 = multi_thread_dbs.USER_PASSPORT_DB0
-PASSWORD_DB1 = multi_thread_dbs.USER_PASSPORT_DB1
-PASSWORD_DB2 = multi_thread_dbs.USER_PASSPORT_DB2
-PASSWORD_DB3 = multi_thread_dbs.USER_PASSPORT_DB3
-PASSWORD_DB4 = multi_thread_dbs.USER_PASSPORT_DB4
-
-TRADE_DB0 = multi_thread_dbs.TRADE_DB0
-TRADE_DB1 = multi_thread_dbs.TRADE_DB1
-TRADE_DB2 = multi_thread_dbs.TRADE_DB2
-TRADE_DB3 = multi_thread_dbs.TRADE_DB3
-TRADE_DB4 = multi_thread_dbs.TRADE_DB4
-
-LOAN_OFFLINE_DB0 = multi_thread_dbs.LOAN_OFFLINE_DB0
-LOAN_OFFLINE_DB1 = multi_thread_dbs.LOAN_OFFLINE_DB1
-LOAN_OFFLINE_DB2 = multi_thread_dbs.LOAN_OFFLINE_DB2
-LOAN_OFFLINE_DB3 = multi_thread_dbs.LOAN_OFFLINE_DB3
-LOAN_OFFLINE_DB4 = multi_thread_dbs.LOAN_OFFLINE_DB4
-
-PRODUCT_BID_DB0 = multi_thread_dbs.PRODUCT_BID_DB0
-PRODUCT_BID_DB1 = multi_thread_dbs.PRODUCT_BID_DB1
-PRODUCT_BID_DB2 = multi_thread_dbs.PRODUCT_BID_DB2
-PRODUCT_BID_DB3 = multi_thread_dbs.PRODUCT_BID_DB3
-PRODUCT_BID_DB4 = multi_thread_dbs.PRODUCT_BID_DB3
-
-BID_DB0 = multi_thread_dbs.BID_DB0
-BID_DB1 = multi_thread_dbs.BID_DB1
-BID_DB2 = multi_thread_dbs.BID_DB2
-BID_DB3 = multi_thread_dbs.BID_DB3
-BID_DB4 = multi_thread_dbs.BID_DB4
-
+INPUT_FILE5 = "t_iou_history005"
+INPUT_FILE6 = "t_iou_history006"
+INPUT_FILE7 = "t_iou_history007"
+INPUT_FILE8 = "t_iou_history008"
+INPUT_FILE9 = "t_iou_history009"
 
 JSON_PRE = "INSERT INTO TEMP_JSON VALUES "
 
@@ -167,10 +138,14 @@ def conver_file(input_file, output_file, output_file2, valid,
                     out_arr[i] = input_arr[i - 6]
                 # borrow_time[32](t_borrow_tm)[33]
                 out_arr[33] = input_arr[26]
-                out_arr[32] = datetime2timestamp(out_arr[33])
+                mutex.acquire()
+                out_arr[32] = date2int(out_arr[33])
+                mutex.release()
                 # repay_time[34](t_repay_tm)[35]
                 out_arr[35] = input_arr[27]
-                out_arr[34] = datetime2timestamp(out_arr[35])
+                mutex.acquire()
+                out_arr[34] = date2int(out_arr[35])
+                mutex.release()
                 # online_status,[36],# pic_list,[37],source_type,[38]
                 for i in range(36, 39):
                     out_arr[i] = input_arr[i - 8]
@@ -191,11 +166,13 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # version_number,[43],local_agreement_status,[44],ecloud_agreement_status,[45]
                 for i in range(43, 46):
                     out_arr[i] = input_arr[i - 10]
+                mutex.acquire()
                 # create_time,[46]
                 out_arr[46] = datetime2timestamp(input_arr[36])
                 # update_time[47]
                 out_arr[47] = str(datetime2timestamp(
                     input_arr[37].rstrip(")")))
+                mutex.release()
                 # borrower_ip,lender_ip
                 out_arr[48] = "NULL"
                 out_arr[49] = "NULL" + ")"
@@ -226,12 +203,28 @@ thread3 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, OUTPUT_JSON_FILE, val
                                  PASSWORD_DB3, TRADE_DB3, LOAN_OFFLINE_DB3, PRODUCT_BID_DB3, BID_DB3))
 thread4 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
                                  PASSWORD_DB4, TRADE_DB4, LOAN_OFFLINE_DB4, PRODUCT_BID_DB4, BID_DB4))
+thread5 = myThread(conver_file, (INPUT_FILE5, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
+                                 PASSWORD_DB5, TRADE_DB5, LOAN_OFFLINE_DB5, PRODUCT_BID_DB5, BID_DB5))
+thread6 = myThread(conver_file, (INPUT_FILE6, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
+                                 PASSWORD_DB6, TRADE_DB6, LOAN_OFFLINE_DB6, PRODUCT_BID_DB6, BID_DB6))
+thread7 = myThread(conver_file, (INPUT_FILE7, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
+                                 PASSWORD_DB7, TRADE_DB7, LOAN_OFFLINE_DB7, PRODUCT_BID_DB7, BID_DB7))
+thread8 = myThread(conver_file, (INPUT_FILE8, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
+                                 PASSWORD_DB8, TRADE_DB8, LOAN_OFFLINE_DB8, PRODUCT_BID_DB8, BID_DB8))
+thread9 = myThread(conver_file, (INPUT_FILE9, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
+                                 PASSWORD_DB9, TRADE_DB9, LOAN_OFFLINE_DB9, PRODUCT_BID_DB9, BID_DB9))
+
 # 添加线程到线程列表
 threads.append(thread0)
 threads.append(thread1)
 threads.append(thread2)
 threads.append(thread3)
 threads.append(thread4)
+threads.append(thread5)
+threads.append(thread6)
+threads.append(thread7)
+threads.append(thread8)
+threads.append(thread9)
 
 # 启动进程
 for t in threads:

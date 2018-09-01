@@ -7,28 +7,20 @@ import time
 import iter_gmatch
 from common_func import *
 import threading
-import multi_thread_dbs
+from multi_thread_dbs import *
 
 
-SEP = os.linesep
 OUTPUT_FILE = "/home/pangqiqiang/loan_installment_list_history_out.sql"
 INPUT_FILE0 = "t_iou_installment_list_history000"
 INPUT_FILE1 = "t_iou_installment_list_history001"
 INPUT_FILE2 = "t_iou_installment_list_history002"
 INPUT_FILE3 = "t_iou_installment_list_history003"
 INPUT_FILE4 = "t_iou_installment_list_history004"
-
-LOAN_DB0 = multi_thread_dbs.LOAN_DB0
-LOAN_DB1 = multi_thread_dbs.LOAN_DB1
-LOAN_DB2 = multi_thread_dbs.LOAN_DB2
-LOAN_DB3 = multi_thread_dbs.LOAN_DB3
-LOAN_DB4 = multi_thread_dbs.LOAN_DB4
-
-USER_PASSPORT_DB0 = multi_thread_dbs.USER_PASSPORT_DB0
-USER_PASSPORT_DB1 = multi_thread_dbs.USER_PASSPORT_DB1
-USER_PASSPORT_DB2 = multi_thread_dbs.USER_PASSPORT_DB2
-USER_PASSPORT_DB3 = multi_thread_dbs.USER_PASSPORT_DB3
-USER_PASSPORT_DB4 = multi_thread_dbs.USER_PASSPORT_DB4
+INPUT_FILE5 = "t_iou_installment_list_history005"
+INPUT_FILE6 = "t_iou_installment_list_history006"
+INPUT_FILE7 = "t_iou_installment_list_history007"
+INPUT_FILE8 = "t_iou_installment_list_history008"
+INPUT_FILE9 = "t_iou_installment_list_history009"
 
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
                     "创业": 3, "租房": 4, "旅游": 5, "装修": 6, "医疗": 7}
@@ -129,7 +121,9 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                     output_arr[26] = 8
                 # repay_time,t_repay_tm
                 output_arr[29] = input_arr[29]
+                mutex.acquire()
                 output_arr[28] = date2int(output_arr[29])
+                mutex.release()
                 # normal_repay_amount
                 output_arr[30] = float_char_to_int(input_arr[20])
                 # online_status,end_status,overdue_status
@@ -141,11 +135,13 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 output_arr[35] = input_arr[27]
                 # payoff_time,t_pay_off_tm
                 output_arr[37] = input_arr[29]
+                mutex.acquire()
                 output_arr[36] = date2int(output_arr[37])
                 # create_time, update_time
                 output_arr[38] = datetime2timestamp(input_arr[30])
                 output_arr[39] = str(datetime2timestamp(
                     input_arr[31].rstrip(")"))) + ")"
+                mutex.release()
                 new_values.append(
                     ",".join([str(i) for i in output_arr]))
             post = ",".join(new_values)
@@ -166,6 +162,16 @@ thread3 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE,
                                  valid, LOAN_DB3, USER_PASSPORT_DB3))
 thread4 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE,
                                  valid, LOAN_DB4, USER_PASSPORT_DB4))
+thread5 = myThread(conver_file, (INPUT_FILE5, OUTPUT_FILE,
+                                 valid, LOAN_DB5, USER_PASSPORT_DB5))
+thread6 = myThread(conver_file, (INPUT_FILE6, OUTPUT_FILE,
+                                 valid, LOAN_DB6, USER_PASSPORT_DB6))
+thread7 = myThread(conver_file, (INPUT_FILE7, OUTPUT_FILE,
+                                 valid, LOAN_DB7, USER_PASSPORT_DB7))
+thread8 = myThread(conver_file, (INPUT_FILE8, OUTPUT_FILE,
+                                 valid, LOAN_DB8, USER_PASSPORT_DB8))
+thread9 = myThread(conver_file, (INPUT_FILE9, OUTPUT_FILE,
+                                 valid, LOAN_DB9, USER_PASSPORT_DB9))
 
 # 添加线程到线程列表
 threads.append(thread0)
@@ -173,6 +179,11 @@ threads.append(thread1)
 threads.append(thread2)
 threads.append(thread3)
 threads.append(thread4)
+threads.append(thread5)
+threads.append(thread6)
+threads.append(thread7)
+threads.append(thread8)
+threads.append(thread9)
 # 启动进程
 for t in threads:
     t.start()
