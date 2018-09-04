@@ -36,7 +36,7 @@ mutex = threading.Lock()
 threads = []
 valid = "INSERT"
 # 维护自增id
-seq_count = 1049173
+seq_count = 1053731
 
 
 # 定义线程类
@@ -149,7 +149,7 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # online_status,[36],# pic_list,[37],source_type,[38]
                 for i in range(36, 39):
                     out_arr[i] = input_arr[i - 8]
-                # source_id
+                # c_source_id
                 out_arr[40] = input_arr[31]
                 # 根据source_type获取source_id
                 if int(out_arr[38]) == 0:
@@ -194,25 +194,25 @@ def conver_file(input_file, output_file, output_file2, valid,
 start_time = time.time()
 # 创建线程
 thread0 = myThread(conver_file, (INPUT_FILE0, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB0, TRADE_DB0, LOAN_OFFLINE_DB0, PRODUCT_BID_DB0, BID_DB0))
+                                 USER_PASSPORT_DB0, TRADE_DB0, LOAN_OFFLINE_DB0, PRODUCT_BID_DB0, BID_DB0))
 thread1 = myThread(conver_file, (INPUT_FILE1, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB1, TRADE_DB1, LOAN_OFFLINE_DB1, PRODUCT_BID_DB1, BID_DB1))
+                                 USER_PASSPORT_DB1, TRADE_DB1, LOAN_OFFLINE_DB1, PRODUCT_BID_DB1, BID_DB1))
 thread2 = myThread(conver_file, (INPUT_FILE2, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB2, TRADE_DB2, LOAN_OFFLINE_DB2, PRODUCT_BID_DB2, BID_DB2))
+                                 USER_PASSPORT_DB2, TRADE_DB2, LOAN_OFFLINE_DB2, PRODUCT_BID_DB2, BID_DB2))
 thread3 = myThread(conver_file, (INPUT_FILE3, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB3, TRADE_DB3, LOAN_OFFLINE_DB3, PRODUCT_BID_DB3, BID_DB3))
+                                 USER_PASSPORT_DB3, TRADE_DB3, LOAN_OFFLINE_DB3, PRODUCT_BID_DB3, BID_DB3))
 thread4 = myThread(conver_file, (INPUT_FILE4, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB4, TRADE_DB4, LOAN_OFFLINE_DB4, PRODUCT_BID_DB4, BID_DB4))
+                                 USER_PASSPORT_DB4, TRADE_DB4, LOAN_OFFLINE_DB4, PRODUCT_BID_DB4, BID_DB4))
 thread5 = myThread(conver_file, (INPUT_FILE5, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB5, TRADE_DB5, LOAN_OFFLINE_DB5, PRODUCT_BID_DB5, BID_DB5))
+                                 USER_PASSPORT_DB5, TRADE_DB5, LOAN_OFFLINE_DB5, PRODUCT_BID_DB5, BID_DB5))
 thread6 = myThread(conver_file, (INPUT_FILE6, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB6, TRADE_DB6, LOAN_OFFLINE_DB6, PRODUCT_BID_DB6, BID_DB6))
+                                 USER_PASSPORT_DB6, TRADE_DB6, LOAN_OFFLINE_DB6, PRODUCT_BID_DB6, BID_DB6))
 thread7 = myThread(conver_file, (INPUT_FILE7, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB7, TRADE_DB7, LOAN_OFFLINE_DB7, PRODUCT_BID_DB7, BID_DB7))
+                                 USER_PASSPORT_DB7, TRADE_DB7, LOAN_OFFLINE_DB7, PRODUCT_BID_DB7, BID_DB7))
 thread8 = myThread(conver_file, (INPUT_FILE8, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB8, TRADE_DB8, LOAN_OFFLINE_DB8, PRODUCT_BID_DB8, BID_DB8))
+                                 USER_PASSPORT_DB8, TRADE_DB8, LOAN_OFFLINE_DB8, PRODUCT_BID_DB8, BID_DB8))
 thread9 = myThread(conver_file, (INPUT_FILE9, OUTPUT_FILE, OUTPUT_JSON_FILE, valid,
-                                 PASSWORD_DB9, TRADE_DB9, LOAN_OFFLINE_DB9, PRODUCT_BID_DB9, BID_DB9))
+                                 USER_PASSPORT_DB9, TRADE_DB9, LOAN_OFFLINE_DB9, PRODUCT_BID_DB9, BID_DB9))
 
 # 添加线程到线程列表
 threads.append(thread0)

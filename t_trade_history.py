@@ -41,7 +41,7 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 # 维护自增id
-seq_count = 13273
+seq_count = 6378
 
 # 定义线程类
 

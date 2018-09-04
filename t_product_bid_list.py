@@ -50,7 +50,7 @@ def conver_file(input_file, output_file, valid):
                     output_arr[2] = USER_PASSPORT_DB.fetch_from_salt(
                         output_arr[3])
                     # borrower_uid(c_borrower_id)
-                    output_arr[5] = input_arr[2]
+                    output_arr[5] = input_arr[4]
                     output_arr[4] = USER_PASSPORT_DB.fetch_from_salt(
                         output_arr[5])
                     # guarantee_uid(c_guarantee_id)，空
@@ -66,15 +66,15 @@ def conver_file(input_file, output_file, valid):
                     output_arr[11] = TRADE_DB.fetch_from_origin_id(
                         output_arr[12])
                     # guarantee_amount空
-                    output_arr[13] = "NULL"
+                    output_arr[13] = "0"
                     # amount
                     try:
                         output_arr[14] = int(float(input_arr[5]) * 100 + 0.5)
                     except ValueError:
                         output_arr[14] = input_arr[5]
                     # online_status,valid_status,end_status
-                    output_arr[15] = input_arr[6]
-                    output_arr[16] = input_arr[7]
+                    output_arr[15] = input_arr[7]
+                    output_arr[16] = input_arr[6]
                     output_arr[17] = input_arr[8]
                     # receive_time(t_rcv_tm)
                     output_arr[19] = input_arr[12]

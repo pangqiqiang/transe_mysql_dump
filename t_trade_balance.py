@@ -16,7 +16,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     # 维护自增id
-    seq_count = 6726993
+    seq_count = 6820139
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:

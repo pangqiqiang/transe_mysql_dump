@@ -115,7 +115,7 @@ def conver_file(input_file, output_file, valid):
                     # online_status,[36],# pic_list,[37],source_type,[38]
                     for i in range(36, 39):
                         out_arr[i] = input_arr[i - 8]
-                    # source_id
+                    # c_source_id
                     out_arr[40] = input_arr[31]
                     # 根据source_type获取source_id
                     if int(out_arr[38]) == 0:

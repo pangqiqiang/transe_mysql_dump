@@ -105,10 +105,8 @@ def datetime2timestamp(date):
 
 
 def get_cur_time_str():
-    Lock.acquire()
     time_str = time.strftime('%Y-%m-%d %H:%M:%S',
                              time.localtime(time.time()))
-    Lock.release()
     return "'" + time_str + "'"
 
 
