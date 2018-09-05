@@ -29,7 +29,7 @@ valid = "INSERT"
 mutex = threading.Lock()
 # 线程池
 threads = []
-seq_count = 187281
+seq_count = 191031
 
 # 定义线程类
 
