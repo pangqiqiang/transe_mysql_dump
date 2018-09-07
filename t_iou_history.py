@@ -23,7 +23,7 @@ INPUT_FILE7 = "t_iou_history007"
 INPUT_FILE8 = "t_iou_history008"
 INPUT_FILE9 = "t_iou_history009"
 
-JSON_PRE = "INSERT INTO TEMP_JSON VALUES "
+JSON_PRE = "INSERT INTO HISTORY_JSON VALUES "
 
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
                     "创业": 3, "租房": 4, "旅游": 5, "装修": 6, "医疗": 7}
