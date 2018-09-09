@@ -2,6 +2,6 @@
 #-*-coding:utf-8-*-
 
 HOST = "10.111.30.20:3306"
-DATABASE = "jjd_11th"
+DATABASE = "jjd_12th"
 USER = "op"
 PASS = "KRkFcVCbopZbS8R7"

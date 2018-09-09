@@ -112,11 +112,12 @@ def conver_file(input_file, output_file, valid, mydb):
                 out_arr[18] = input_arr[14]
                 out_arr[17] = datetime2int(out_arr[18])
                 # trade_status
-                if (out_arr[16] == 0 and out_arr[14] != "NULL"):
+                if (out_arr[16] == "0" and out_arr[14] != "NULL" and
+                        len(out_arr[14].strip("'")) > 0):
                     out_arr[12] = 2
-                elif (out_arr[16] == 1 and out_arr[15] == 1):
+                elif (out_arr[16] == "1" and out_arr[15] == "1"):
                     out_arr[12] = 3
-                elif (out_arr[16] == 1 and out_arr[15] == 0):
+                elif (out_arr[16] == "1" and out_arr[15] == "0"):
                     out_arr[12] = 4
                 else:
                     out_arr[12] = 1

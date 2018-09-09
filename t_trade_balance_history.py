@@ -70,9 +70,11 @@ def conver_file(input_file, output_file, valid):
                     out_arr[18] = input_arr[6]
                     out_arr[17] = datetime2int(out_arr[18])
                     # trade_status
-                    if (out_arr[15] == 1 and out_arr[18] != "NULL"):
+                    if (out_arr[15] == "1" and out_arr[18] != "NULL" and
+                            len(out_arr[18].strip("'")) > 0):
                         out_arr[12] = 3
-                    elif (out_arr[15] == 0 and out_arr[18] != "NULL"):
+                    elif (out_arr[15] == "0" and out_arr[18] != "NULL" and
+                          len(out_arr[18].strip("'")) > 0):
                         out_arr[12] = 4
                     else:
                         out_arr[12] = 2

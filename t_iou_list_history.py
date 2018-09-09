@@ -151,7 +151,7 @@ def conver_file(input_file, output_file, valid, loan_db,
                 mutex.release()
                 # receive_status
                 output_arr[36] = "b'0'" if (
-                    output_arr[38] == "NULL" or len(output_arr[38]) == 0) else "b'1'"
+                    output_arr[38] == "NULL" or len(output_arr[38].strip("'")) == 0) else "b'1'"
                 # reconciliation_status
                 output_arr[39] = input_arr[23]
                 # reconciliation_time(t_reconciliation_tm)
