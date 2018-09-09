@@ -152,10 +152,10 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # c_source_id
                 out_arr[40] = input_arr[31]
                 # 根据source_type获取source_id
-                if int(out_arr[38]) == 0:
+                if out_arr[38] == "0":
                     out_arr[39] = loan_offline_db.fetch_from_origin_id(
                         out_arr[40])
-                elif int(out_arr[38]) == 1:
+                elif out_arr[38] == "1":
                     out_arr[39] = product_bid_db.fetch_from_origin_id(
                         out_arr[40])
                 else:
