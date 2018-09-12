@@ -10,8 +10,8 @@ from common_func import *
 from multi_thread_dbs import *
 
 
-OUTPUT_FILE = "/home/pangqiqiang/loan_t_iou_history_out.sql"
-OUTPUT_JSON_FILE = "/home/pangqiqiang/t_iou_history_json.sql"
+OUTPUT_FILE = "/home/luanzengze/loan_t_iou_history_out.sql"
+OUTPUT_JSON_FILE = "/home/luanzengze/t_iou_history_json.sql"
 INPUT_FILE0 = "t_iou_history000"
 INPUT_FILE1 = "t_iou_history001"
 INPUT_FILE2 = "t_iou_history002"
@@ -23,7 +23,7 @@ INPUT_FILE7 = "t_iou_history007"
 INPUT_FILE8 = "t_iou_history008"
 INPUT_FILE9 = "t_iou_history009"
 
-JSON_PRE = "INSERT INTO HISTORY_JSON VALUES "
+JSON_PRE = "INSERT INTO IOU_HISTORY_JSON VALUES "
 
 PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
                     "创业": 3, "租房": 4, "旅游": 5, "装修": 6, "医疗": 7}
@@ -36,7 +36,7 @@ mutex = threading.Lock()
 threads = []
 valid = "INSERT"
 # 维护自增id
-seq_count = 1053731
+seq_count = 1055437
 
 
 # 定义线程类

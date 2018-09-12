@@ -10,7 +10,7 @@ import multi_thread_dbs
 import threading
 
 
-OUTPUT_FILE = "/home/pangqiqiang/t_trade_history_out.sql"
+OUTPUT_FILE = "/home/luanzengze/t_trade_history_out.sql"
 INPUT_FILE0 = "t_trade_history000"
 INPUT_FILE1 = "t_trade_history001"
 INPUT_FILE2 = "t_trade_history002"
@@ -41,7 +41,7 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 # 维护自增id
-seq_count = 6378
+seq_count = 7290
 
 # 定义线程类
 
@@ -90,7 +90,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 # uid,c_user_id
                 out_arr[5] = input_arr[3]
                 out_arr[4] = mydb.fetch_from_salt(
-                    out_arr[5])
+                        out_arr[5])
                 # bank_account
                 out_arr[6] = input_arr[4]
                 # withdraw_type(int->bit)
@@ -111,6 +111,10 @@ def conver_file(input_file, output_file, valid, mydb):
                 # receive_time,t_rcv_tm
                 out_arr[18] = input_arr[14]
                 out_arr[17] = datetime2int(out_arr[18])
+                # 处理t_send_tm为空
+                if out_arr[13] == "NULL":
+                    out_arr[14] = out_arr[18]
+                    out_arr[13] = out_arr[17]
                 # trade_status
                 if (out_arr[16] == "0" and out_arr[14] != "NULL" and
                         len(out_arr[14].strip("'")) > 0):

@@ -69,6 +69,10 @@ def conver_file(input_file, output_file, valid):
                     # receive_time,t_rcv_tm
                     out_arr[18] = input_arr[14]
                     out_arr[17] = datetime2int(out_arr[18])
+                    # 处理t_send_tm为空
+                    if out_arr[13] == "NULL":
+                        out_arr[14] = out_arr[18]
+                        out_arr[13] = out_arr[17]
                     # trade_status
                     if (out_arr[16] == "0" and out_arr[14] != "NULL" and
                             len(out_arr[14].strip("'")) > 0):
@@ -97,7 +101,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.time()
 conver_file("t_trade.sql",
-            "/home/pangqiqiang/t_trade_out.sql", valid)
+            "/home/luanzengze/t_trade_out.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

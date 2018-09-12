@@ -96,7 +96,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.time()
 conver_file("t_product_bid_list.sql",
-            "/home/pangqiqiang/t_product_bid_list_out.sql", valid)
+            "/home/luanzengze/t_product_bid_list_out.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

@@ -7,6 +7,7 @@ import time
 import iter_gmatch
 from common_func import *
 import common_dbs
+import pdb
 SEP = os.linesep
 # 导入数据库类
 PASSWORD_DB = common_dbs.USER_PASSPORT_DB
@@ -16,7 +17,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     # 维护自增id
-    seq_count = 6820139
+    seq_count = 6865120
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -46,7 +47,7 @@ def conver_file(input_file, output_file, valid):
                     # trade_type
                     out_arr[3] = "2"
                     # uid,c_user_id
-                    out_arr[5] = input_arr[3]
+                    out_arr[5] = input_arr[1]
                     out_arr[4] = PASSWORD_DB.fetch_from_salt(
                         out_arr[5])
                     # bank_account
@@ -59,9 +60,9 @@ def conver_file(input_file, output_file, valid):
                     # amount,fee_amount
                     out_arr[10] = float_char_to_int(input_arr[3])
                     out_arr[11] = "0"
-                    # send_time, t_send_tm
-                    out_arr[14] = "NULL"
-                    out_arr[13] = "NULL"
+                    # send_time, t_send_tm, 原始库无数据采用t_rcv_tm
+                    out_arr[14] = input_arr[6]
+                    out_arr[13] = datetime2int(out_arr[14])
                     # b_valid
                     out_arr[15] = input_arr[4]
                     # b_rcv_bank
@@ -96,7 +97,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.time()
 conver_file("t_trade_balance.sql",
-            "/home/pangqiqiang/t_trade_balance_out.sql", valid)
+            "/home/luanzengze/t_trade_balance_out.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

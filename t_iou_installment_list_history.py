@@ -10,7 +10,7 @@ import threading
 from multi_thread_dbs import *
 
 
-OUTPUT_FILE = "/home/pangqiqiang/loan_installment_list_history_out.sql"
+OUTPUT_FILE = "/home/luanzengze/loan_installment_list_history_out.sql"
 INPUT_FILE0 = "t_iou_installment_list_history000"
 INPUT_FILE1 = "t_iou_installment_list_history001"
 INPUT_FILE2 = "t_iou_installment_list_history002"
@@ -32,7 +32,7 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 valid = "INSERT"
-seq_count = 1064292
+seq_count = 1065950
 
 # 定义线程类
 
@@ -120,7 +120,7 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 if output_arr[26] == None:
                     output_arr[26] = 8
                 # repay_time,t_repay_tm
-                output_arr[29] = input_arr[29]
+                output_arr[29] = input_arr[28]
                 mutex.acquire()
                 output_arr[28] = date2int(output_arr[29])
                 mutex.release()
