@@ -15,6 +15,7 @@ valid = "INSERT"
 
 
 def conver_file(input_file, output_file, valid):
+    count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -29,6 +30,7 @@ def conver_file(input_file, output_file, valid):
                     "t_iou_overdue_list_offline", "loan_overdue_forfeit_list_offline")
                 new_values = []
                 for item in gmatch(line, "(", "),", pre_pos):
+                    count = count + 1
                     # 输出映射数组
                     output_arr = list(range(7))
                     item = item.strip(",")
@@ -59,4 +61,5 @@ conver_file("t_iou_overdue_list_offline.sql",
             "/home/luanzengze/t_iou_overdue_list_offline_out.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
-print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)
+print("All documents complete!!!\nTime elapsed: %.3f sec, and %d items" %
+      (time_elapse, count))

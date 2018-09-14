@@ -76,13 +76,16 @@ def conver_file(input_file, output_file, valid):
                     # trade_status
                     if (out_arr[16] == "0" and out_arr[14] != "NULL" and
                             len(out_arr[14].strip("'")) > 0):
-                        out_arr[12] = 2
+						if(out_arr[3]=="18" or out_arr[3] == "19"):
+                            out_arr[12] = 1
+						else:
+                            out_arr[12] = 2
                     elif (out_arr[16] == "1" and out_arr[15] == "1"):
                         out_arr[12] = 3
                     elif (out_arr[16] == "1" and out_arr[15] == "0"):
                         out_arr[12] = 4
                     else:
-                        out_arr[12] = 1
+                        out_arr[12] = 0
                     # reconciliation_status
                     out_arr[19] = "b'" + input_arr[12] + "'"
                     # reconciliation_time,t_reconciliation_tm
