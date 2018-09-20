@@ -12,11 +12,14 @@ SEP = os.linesep
 PASSWORD_DB = common_dbs.USER_PASSPORT_DB
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
-
+COLS = '("original_id", "pay_order_no", "trade_type", "uid", "c_user_id", \
+"bank_account", "withdraw_type", "relation_type", "reserve_data", \
+"amount", "fee_amount", "trade_status", "send_time", "t_send_tm", \
+"b_valid","b_rcv_bank","receive_time","t_rcv_tm","receive_time",\
+"t_rcv_tm", "reconciliation_status", "reconciliation_time", \
+"t_reconciliation_tm", "lease_status", "create_time", "update_time")'
 
 def conver_file(input_file, output_file, valid):
-    # 维护自增id
-    seq_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -28,19 +31,15 @@ def conver_file(input_file, output_file, valid):
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))
-                           ].replace("t_trade", "trade")
+                pre = line[:pre_pos].replace("t_trade", "trade")
                 new_values = []
                 for item in gmatch(line, "(", "),", pre_pos):
                         # 输出映射数组
                     out_arr = list(range(25))
-                    # 维护自增id
-                    seq_count += 1
-                    out_arr[0] = "(" + str(seq_count)
                     item = item.strip(",")
                     input_arr = parse_sql_fields(item)
                     # original_id
-                    out_arr[1] = input_arr[0].lstrip("(")
+                    out_arr[1] = input_arr[0]
                     # pay_order_no
                     out_arr[2] = input_arr[1]
                     # trade_type
@@ -96,10 +95,11 @@ def conver_file(input_file, output_file, valid):
                     # create_time,update_time
                     out_arr[23] = get_cur_time_str()
                     out_arr[24] = get_cur_time_str() + ")"
+                    del out_arr[0]
                     new_values.append(
                         ",".join([str(i) for i in out_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + ";" + SEP)
+                fout.write(pre + " " + COLS + "VALUES" + post + ";" + SEP)
 
 
 start_time = time.time()

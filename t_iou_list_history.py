@@ -25,11 +25,40 @@ OFFLINE_PAY_METHOD_MAP = {'支付宝': 0, '微信': 1, '银行卡': 2}
 # 导入迭代器
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
+COLS = '("loan_id",\
+"loan_installment_list_id",\
+"write_off_id",\
+"lender_uid",\
+"borrower_uid",\
+"guarantee_uid",\
+"repayer_type",\
+"confirm_id",\
+"trade_id",\
+"repay_amount",\
+"amount",\
+"interest_amount",\
+"forfeit_amount",\
+"commission_amount",\
+"commission_party_amount",\
+"collection_account_id",\
+"collection_apply_id",\
+"overdue_manage_amount",\
+"return_overdue_manage_amount",\
+"online_status",\
+"offline_pay_method",\
+"valid_status",\
+"receive_status",\
+"receive_time",\
+"reconciliation_status",\
+"reconciliation_time",\
+"extend_time_status",\
+"create_time",\
+"update_time")'
+
 # 进程锁解决资源冲突
 mutex = threading.Lock()
 # 线程池
 threads = []
-seq_count = 198501
 
 # 定义线程类
 
@@ -48,8 +77,6 @@ def conver_file(input_file, output_file, valid, loan_db,
                 loan_installment_list_db, loan_write_off_db,
                 user_passport_db, trade_db, collection_account_db,
                 collection_apply_db):
-    # 维护自增id
-    global seq_count
     with open(input_file, 'r') as fin:
         for line in fin:
             if not line.startswith(valid):
@@ -67,12 +94,8 @@ def conver_file(input_file, output_file, valid, loan_db,
                 output_arr = list(range(45))
                 item = item.strip(",")
                 input_arr = parse_sql_fields(item)
-                mutex.acquire()
-                seq_count += 1
-                output_arr[0] = "(" + str(seq_count)
-                mutex.release()
                 # original_id
-                output_arr[1] = input_arr[0].lstrip("(")
+                output_arr[1] = input_arr[0]
                 # loan_id(c_iou_id)
                 output_arr[3] = input_arr[1]
                 output_arr[2] = loan_db.fetch_from_origin_id(
@@ -165,10 +188,11 @@ def conver_file(input_file, output_file, valid, loan_db,
                 mutex.release()
                 # update_time
                 output_arr[44] = str(output_arr[43]) + ")"
+                del output_arr[0]
                 new_values.append(",".join([str(i) for i in output_arr]))
             post = ",".join(new_values)
             mutex.acquire()
-            write_lines_in_file(output_file, pre + " " + post + ";")
+            write_lines_in_file(output_arr, pre + " " + COLS + "VALUES" + post + ";" + SEP)
             mutex.release()
 
 

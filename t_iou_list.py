@@ -21,11 +21,38 @@ OFFLINE_PAY_METHOD_MAP = {'支付宝': 0, '微信': 1, '银行卡': 2}
 # 导入迭代器
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
+COLS = '("loan_id",\
+"loan_installment_list_id",\
+"write_off_id",\
+"lender_uid",\
+"borrower_uid",\
+"guarantee_uid",\
+"repayer_type",\
+"confirm_id",\
+"trade_id",\
+"repay_amount",\
+"amount",\
+"interest_amount",\
+"forfeit_amount",\
+"commission_amount",\
+"commission_party_amount",\
+"collection_account_id",\
+"collection_apply_id",\
+"overdue_manage_amount",\
+"return_overdue_manage_amount",\
+"online_status",\
+"offline_pay_method",\
+"valid_status",\
+"receive_status",\
+"receive_time",\
+"reconciliation_status",\
+"reconciliation_time",\
+"extend_time_status",\
+"create_time",\
+"update_time")'
 
 
 def conver_file(input_file, output_file, valid):
-    # 维护自增id
-    seq_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -40,14 +67,12 @@ def conver_file(input_file, output_file, valid):
                                  ].replace("t_iou_list", "loan_repay_list")
                 new_values = []
                 for item in gmatch(line, "(", "),", pre_pos):
-                    seq_count += 1
                     # 输出列表初始化
                     output_arr = list(range(45))
                     item = item.strip(",")
                     input_arr = parse_sql_fields(item)
-                    output_arr[0] = "(" + str(seq_count)
                     # original_id
-                    output_arr[1] = input_arr[0].lstrip("(")
+                    output_arr[1] = input_arr[0]
                     # loan_id(c_iou_id)
                     output_arr[3] = input_arr[1]
                     output_arr[2] = LOAN_DB.fetch_from_origin_id(
@@ -136,9 +161,10 @@ def conver_file(input_file, output_file, valid):
                     output_arr[43] = datetime2timestamp(input_arr[26])
                     # update_time
                     output_arr[44] = str(output_arr[43]) + ")"
+                    del output_arr[0]
                     new_values.append(",".join([str(i) for i in output_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + ";" + SEP)
+                fout.write(pre + " " + COLS + "VALUES" + post + ";" + SEP)
 
 
 start_time = time.time()

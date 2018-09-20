@@ -35,8 +35,13 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 valid = "INSERT"
-# 维护自增id
-seq_count = 1062861
+COLS = '("original_id", "borrower_uid", "lender_uid", "guarantee_uid", \
+"service_amount", "guarantee_amount", "total_amount", "amount", "interest_amount", \
+"forfeit_amount", "overdue_manage_amount", "overdue_manage_amount_special", "return_overdue_manage_amount", \
+"return_overdue_manage_id", "get_amount", "got_amount", "paid_amount", "paid_interest_amount", "paid_forfeit_amount", \
+"paid_overdue_manage_amount", "purpose_type", "memo", "repay_type", "period", "interest_rate", "overdue_rate", "borrow_time", \
+"repay_time", "online_status", "pic_list", "source_type", "source_id", "valid_status", "end_status", \
+"version_number", "local_agreement_status", "ecloud_agreement_status","create_time", "update_time", "borrower_ip", "lender_ip")'
 
 
 # 定义线程类
@@ -52,8 +57,6 @@ class myThread(threading.Thread):
 
 def conver_file(input_file, output_file, output_file2, valid,
                 password_db, trade_db, loan_offline_db, product_bid_db, bid_db):
-    global seq_count
-    # json_count = 0
     with open(input_file, 'r') as fin:
         for line in fin:
             if not line.startswith(valid):
@@ -63,24 +66,17 @@ def conver_file(input_file, output_file, output_file2, valid,
             if pre_pos == -1:
                 continue
             post = line[(pre_pos + 1):]
-            pre = line[:(pre_pos + 1 + len("VALUES"))
-                       ].replace("t_iou_history", "loan")
+            pre = line[:pre_pos].replace("t_iou_history", "loan")
             new_values = []
             json_values = []
             for item in gmatch(line, "(", "),", pre_pos):
                 # 输出映射数组
                 out_arr = list(range(50))
                 json_arr = []
-                # id
-                # 维护自增id
-                mutex.acquire()
-                seq_count += 1
-                out_arr[0] = "(" + str(seq_count)
-                mutex.release()
                 item = item.strip(",")
                 input_arr = parse_sql_fields(item)
                 # original_id
-                out_arr[1] = input_arr[0].lstrip("(")
+                out_arr[1] = input_arr[0]
                 # json表主键
                 json_arr.append(input_arr[0])
                 # borrower_uid,c_borrower_id
@@ -176,6 +172,7 @@ def conver_file(input_file, output_file, output_file2, valid,
                 # borrower_ip,lender_ip
                 out_arr[48] = "NULL"
                 out_arr[49] = "NULL" + ")"
+                del out_arr[0]
                 for i in range(38, len(input_arr)):
                     json_arr.append(input_arr[i])
                 json_arr.insert(-1, "NULL")
@@ -186,7 +183,7 @@ def conver_file(input_file, output_file, output_file2, valid,
             post = ",".join(new_values)
             json_post = ",".join(json_values)
             mutex.acquire()
-            write_lines_in_file(output_file, pre + " " + post + ";")
+            write_lines_in_file(output_file, pre + " " + COLS + "VALUES" + post + ";" + SEP)
             write_lines_in_file(output_file2, JSON_PRE + json_post + ";")
             mutex.release()
 

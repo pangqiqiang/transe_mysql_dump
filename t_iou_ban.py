@@ -24,12 +24,15 @@ PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
 
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
-
+COLS = '("original_id", "borrower_uid", "lender_uid", "guarantee_uid", \
+"service_amount", "guarantee_amount", "total_amount", "amount", "interest_amount", \
+"forfeit_amount", "overdue_manage_amount", "overdue_manage_amount_special", "return_overdue_manage_amount", \
+"return_overdue_manage_id", "get_amount", "got_amount", "paid_amount", "paid_interest_amount", "paid_forfeit_amount", \
+"paid_overdue_manage_amount", "purpose_type", "memo", "repay_type", "period", "interest_rate", "overdue_rate", "borrow_time", \
+"repay_time", "online_status", "pic_list", "source_type", "source_id", "valid_status", "end_status", \
+"version_number", "local_agreement_status", "ecloud_agreement_status","create_time", "update_time", "borrower_ip", "lender_ip")'
 
 def conver_file(input_file, output_file, output_file2, valid):
-    # 维护自增id
-    seq_count = 7696352
-    #json_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             with open(output_file2, "w") as fout_json:
@@ -46,20 +49,14 @@ def conver_file(input_file, output_file, output_file2, valid):
                     new_values = []
                     json_values = []
                     for item in gmatch(line, "(", "),", pre_pos):
-                        # 维护自增id
-                        seq_count += 1
-                        #json_count += 1
-                        # 输出映射数组
                         out_arr = list(range(50))
                         json_arr = []
-                        # id
-                        out_arr[0] = "(" + str(seq_count)
                         item = item.strip(",")
                         input_arr = parse_sql_fields(item)
                         # json表主键
                         json_arr.append(input_arr[0])
                         # original_id
-                        out_arr[1] = input_arr[0].lstrip("(")
+                        out_arr[1] = input_arr[0]
                         # borrower_uid,c_borrower_id
                         out_arr[3] = input_arr[1]
                         out_arr[2] = PASSWORD_DB.fetch_from_salt(
@@ -148,6 +145,7 @@ def conver_file(input_file, output_file, output_file2, valid):
                         # borrower_ip,lender_ip
                         out_arr[48] = "NULL"
                         out_arr[49] = "NULL" + ")"
+                        del out_arr[0]
                         for i in range(38, len(input_arr)):
                             json_arr.append(input_arr[i])
                         new_values.append(
@@ -155,7 +153,7 @@ def conver_file(input_file, output_file, output_file2, valid):
                         json_values.append(",".join(json_arr))
                     post = ",".join(new_values)
                     json_post = ",".join(json_values)
-                    fout.write(pre + " " + post + ";" + SEP)
+                    fout.write(pre + " " + COLS + "VALUES" + post + ";" + SEP)
                     fout_json.write(JSON_PRE + json_post + ";" + SEP)
 
 

@@ -22,11 +22,16 @@ PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
 gmatch = iter_gmatch.gmatch
 # 数据有效行必须以INSERT 开头
 valid = "INSERT"
+COLS = '("original_id","cur_period","total_period","loan_id","borrower_uid","lender_uid", \
+"guarantee_uid","overdue_rate","total_amount","amount","interest_amount","forfeit_amount", \
+"overdue_manage_amount","overdue_manage_amount_special","return_overdue_manage_amount", \
+"get_amount","got_amount","paid_amount","paid_interest_amount","paid_forfeit_amount",\
+"paid_overdue_manage_amount","purpose","repay_time","normal_repay_amount","online_status", \
+"end_status","overdue_status","valid_status","version_number","payoff_time")'
+
 
 
 def conver_file(input_file, output_file, valid):
-    # 维护主键
-    seq_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -37,18 +42,15 @@ def conver_file(input_file, output_file, valid):
                 if pre_pos == -1:
                     continue
                 post = line[(pre_pos + 1):]
-                pre = line[:(pre_pos + 1 + len("VALUES"))
-                           ].replace("t_iou_installment_list", "loan_installment_list")
+                pre = line[:pre_pos].replace("t_iou_installment_list", "loan_installment_list")
                 new_values = []
                 for item in gmatch(line, "(", "),", pre_pos):
                     # 输出映射数组
                     output_arr = list(range(40))
                     item = item.strip(",")
                     input_arr = parse_sql_fields(item)
-                    seq_count += 1
-                    output_arr[0] = "(" + str(seq_count)
                     # Original_id,[1],cur_period,total_period,
-                    output_arr[1] = input_arr[0].lstrip("(")
+                    output_arr[1] = input_arr[0]
                     # cur_period,total_period
                     output_arr[2] = input_arr[1]
                     output_arr[3] = input_arr[2]
@@ -112,10 +114,11 @@ def conver_file(input_file, output_file, valid):
                     output_arr[38] = datetime2timestamp(input_arr[31])
                     output_arr[39] = str(datetime2timestamp(
                         input_arr[32].rstrip(")"))) + ")"
+                    del output_arr[0]
                     new_values.append(
                         ",".join([str(i) for i in output_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + ";" + SEP)
+                fout.write(pre + " " + COLS + "VALUES" + post + ";" + SEP)
 
 
 start_time = time.time()

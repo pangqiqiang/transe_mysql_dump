@@ -32,8 +32,12 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 valid = "INSERT"
-seq_count = 1073352
-
+COLS = '("original_id","cur_period","total_period","loan_id","borrower_uid","lender_uid", \
+"guarantee_uid","overdue_rate","total_amount","amount","interest_amount","forfeit_amount", \
+"overdue_manage_amount","overdue_manage_amount_special","return_overdue_manage_amount", \
+"get_amount","got_amount","paid_amount","paid_interest_amount","paid_forfeit_amount",\
+"paid_overdue_manage_amount","purpose","repay_time","normal_repay_amount","online_status", \
+"end_status","overdue_status","valid_status","version_number","payoff_time")'
 # 定义线程类
 
 
@@ -48,8 +52,6 @@ class myThread(threading.Thread):
 
 
 def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
-    # 维护主键
-    global seq_count
     with open(input_file, 'r') as fin:
         for line in fin:
             if not line.startswith(valid):
@@ -67,13 +69,8 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 output_arr = list(range(40))
                 item = item.strip(",")
                 input_arr = parse_sql_fields(item)
-                mutex.acquire()
-                seq_count += 1
-                # print(seq_count)
-                output_arr[0] = "(" + str(seq_count)
-                mutex.release()
                 # Original_id,[1],cur_period,total_period,
-                output_arr[1] = input_arr[0].lstrip("(")
+                output_arr[1] = input_arr[0]
                 # cur_period,total_period
                 output_arr[2] = input_arr[1]
                 output_arr[3] = input_arr[2]
@@ -142,11 +139,12 @@ def conver_file(input_file, output_file, valid, loan_db, user_passport_db):
                 output_arr[39] = str(datetime2timestamp(
                     input_arr[31].rstrip(")"))) + ")"
                 mutex.release()
+                del output_arr[0]
                 new_values.append(
                     ",".join([str(i) for i in output_arr]))
             post = ",".join(new_values)
             mutex.acquire()
-            write_lines_in_file(output_file, pre + " " + post + ";")
+            write_lines_in_file(output_file, pre + " " + COLS + "VALUES" + post + ";" + SEP)
             mutex.release()
 
 

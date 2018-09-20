@@ -22,11 +22,16 @@ PURPOSE_TYPE_MAP = {"个体经营": 0, "消费": 1, "助学": 2,
 
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
+COLS = '("original_id", "borrower_uid", "lender_uid", "guarantee_uid", \
+"service_amount", "guarantee_amount", "total_amount", "amount", "interest_amount", \
+"forfeit_amount", "overdue_manage_amount", "overdue_manage_amount_special", "return_overdue_manage_amount", \
+"return_overdue_manage_id", "get_amount", "got_amount", "paid_amount", "paid_interest_amount", "paid_forfeit_amount", \
+"paid_overdue_manage_amount", "purpose_type", "memo", "repay_type", "period", "interest_rate", "overdue_rate", "borrow_time", \
+"repay_time", "online_status", "pic_list", "source_type", "source_id", "valid_status", "end_status", \
+"version_number", "local_agreement_status", "ecloud_agreement_status","create_time", "update_time", "borrower_ip", "lender_ip")'
 
 
 def conver_file(input_file, output_file, valid):
-    # 维护自增id
-    seq_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -42,17 +47,12 @@ def conver_file(input_file, output_file, valid):
                            ].replace("t_iou", "loan")
                 new_values = []
                 for item in gmatch(line, "(", "),", pre_pos):
-                    # 维护自增id
-                    seq_count += 1
-                    # print(item)
                     # 输出映射数组
                     out_arr = list(range(50))
-                    # id
-                    out_arr[0] = "(" + str(seq_count)
                     item = item.strip(",")
                     input_arr = parse_sql_fields(item)
                     # original_id
-                    out_arr[1] = input_arr[0].lstrip("(")
+                    out_arr[1] = input_arr[0]
                     # borrower_uid,c_borrower_id
                     out_arr[3] = input_arr[1]
                     out_arr[2] = PASSWORD_DB.fetch_from_salt(
@@ -140,10 +140,11 @@ def conver_file(input_file, output_file, valid):
                     # borrower_ip,lender_ip
                     out_arr[48] = "NULL"
                     out_arr[49] = "NULL" + ")"
+                    del out_arr[0]
                     new_values.append(
                         ",".join([str(i) for i in out_arr]))
                 post = ",".join(new_values)
-                fout.write(pre + " " + post + ";" + SEP)
+                fout.write(pre + " " + COLS + "VALUES" + post + ";" + SEP)
 
 
 start_time = time.time()

@@ -10,6 +10,13 @@ import multi_thread_dbs
 import threading
 
 
+COLS = '("original_id", "pay_order_no", "trade_type", "uid", "c_user_id", \
+"bank_account", "withdraw_type", "relation_type", "reserve_data", \
+"amount", "fee_amount", "trade_status", "send_time", "t_send_tm", \
+"b_valid","b_rcv_bank","receive_time","t_rcv_tm","receive_time",\
+"t_rcv_tm", "reconciliation_status", "reconciliation_time", \
+"t_reconciliation_tm", "lease_status", "create_time", "update_time")'
+
 OUTPUT_FILE = "/home/t_trade_history_out.sql"
 INPUT_FILE0 = "t_trade_history000"
 INPUT_FILE1 = "t_trade_history001"
@@ -40,8 +47,6 @@ valid = "INSERT"
 mutex = threading.Lock()
 # 线程池
 threads = []
-# 维护自增id
-seq_count = 6704
 
 # 定义线程类
 
@@ -57,7 +62,6 @@ class myThread(threading.Thread):
 
 
 def conver_file(input_file, output_file, valid, mydb):
-    global seq_count
     with open(input_file, 'r') as fin:
         for line in fin:
             if not line.startswith(valid):
@@ -68,21 +72,15 @@ def conver_file(input_file, output_file, valid, mydb):
             if pre_pos == -1:
                 continue
             post = line[(pre_pos + 1):]
-            pre = line[:(pre_pos + 1 + len("VALUES"))
-                       ].replace("t_trade_history", "trade")
+            pre = line[:pre_pos].replace("t_trade_history", "trade")
             new_values = []
             for item in gmatch(line, "(", "),", pre_pos):
                     # 输出映射数组
                 out_arr = list(range(25))
-                # 维护自增id
-                mutex.acquire()
-                seq_count += 1
-                out_arr[0] = "(" + str(seq_count)
-                mutex.release()
                 item = item.strip(",")
                 input_arr = parse_sql_fields(item)
                 # original_id
-                out_arr[1] = input_arr[0].lstrip("(")
+                out_arr[1] = input_arr[0]
                 # pay_order_no
                 out_arr[2] = input_arr[1]
                 # trade_type
@@ -138,11 +136,12 @@ def conver_file(input_file, output_file, valid, mydb):
                 # create_time,update_time
                 out_arr[23] = input_arr[16].rstrip(")")
                 out_arr[24] = out_arr[23] + ")"
+                del out_arr[0]
                 new_values.append(
                     ",".join([str(i) for i in out_arr]))
             post = ",".join(new_values)
             mutex.acquire()
-            write_lines_in_file(output_file, pre + " " + post + ";")
+            write_lines_in_file(output_file, pre + COLS +  " " + post + ";")
             mutex.release()
 
 
