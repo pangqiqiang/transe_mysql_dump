@@ -13,12 +13,30 @@ SEP = os.linesep
 PASSWORD_DB = common_dbs.USER_PASSPORT_DB
 gmatch = iter_gmatch.gmatch
 valid = "INSERT"
-COLS = '("original_id", "pay_order_no", "trade_type", "uid", "c_user_id", \
-"bank_account", "withdraw_type", "relation_type", "reserve_data", \
-"amount", "fee_amount", "trade_status", "send_time", "t_send_tm", \
-"b_valid","b_rcv_bank","receive_time","t_rcv_tm","receive_time",\
-"t_rcv_tm", "reconciliation_status", "reconciliation_time", \
-"t_reconciliation_tm", "lease_status", "create_time", "update_time")'
+COLS = '("original_id",\
+"pay_order_no",\
+"trade_type",\
+"uid",\
+"c_user_id",\
+"bank_account",\
+"withdraw_type",\
+"relation_type",\
+"reserve_data",\
+"amount",\
+"fee_amount",\
+"trade_status",\
+"send_time",\
+"t_send_tm",\
+"b_valid",\
+"b_rcv_bank",\
+"receive_time",\
+"t_rcv_tm",\
+"reconciliation_status",\
+"reconciliation_time",\
+"t_reconciliation_tm",\
+"lease_status",\
+"create_time",\
+"update_time")'
 
 
 def conver_file(input_file, output_file, valid):

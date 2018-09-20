@@ -10,12 +10,30 @@ import multi_thread_dbs
 import threading
 
 
-COLS = '("original_id", "pay_order_no", "trade_type", "uid", "c_user_id", \
-"bank_account", "withdraw_type", "relation_type", "reserve_data", \
-"amount", "fee_amount", "trade_status", "send_time", "t_send_tm", \
-"b_valid","b_rcv_bank","receive_time","t_rcv_tm","receive_time",\
-"t_rcv_tm", "reconciliation_status", "reconciliation_time", \
-"t_reconciliation_tm", "lease_status", "create_time", "update_time")'
+COLS = '("original_id",\
+"pay_order_no",\
+"trade_type",\
+"uid",\
+"c_user_id",\
+"bank_account",\
+"withdraw_type",\
+"relation_type",\
+"reserve_data",\
+"amount",\
+"fee_amount",\
+"trade_status",\
+"send_time",\
+"t_send_tm",\
+"b_valid",\
+"b_rcv_bank",\
+"receive_time",\
+"t_rcv_tm",\
+"reconciliation_status",\
+"reconciliation_time",\
+"t_reconciliation_tm",\
+"lease_status",\
+"create_time",\
+"update_time")'
 
 OUTPUT_FILE = "/home/t_trade_history_out.sql"
 INPUT_FILE0 = "t_trade_history000"
