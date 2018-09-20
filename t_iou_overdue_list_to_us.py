@@ -8,7 +8,7 @@ import iter_gmatch
 from common_func import *
 from multi_thread_dbs import *
 
-OUTPUT_FILE = "/home/luanzengze/t_iou_overdue_list_to_us_out.sql"
+OUTPUT_FILE = "/home/t_iou_overdue_list_to_us_out.sql"
 INPUT_FILE0 = "t_iou_overdue_list_to_us000"
 INPUT_FILE1 = "t_iou_overdue_list_to_us001"
 INPUT_FILE2 = "t_iou_overdue_list_to_us002"

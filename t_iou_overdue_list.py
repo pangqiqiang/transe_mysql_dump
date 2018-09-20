@@ -9,7 +9,7 @@ import time
 from common_func import *
 import multi_thread_dbs
 
-OUTPUT_FILE = "/home/luanzengze/t_iou_overdue_list_out.sql"
+OUTPUT_FILE = "/home/t_iou_overdue_list_out.sql"
 INPUT_FILE0 = "t_iou_overdue_list000"
 INPUT_FILE1 = "t_iou_overdue_list001"
 INPUT_FILE2 = "t_iou_overdue_list002"

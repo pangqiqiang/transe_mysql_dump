@@ -9,7 +9,7 @@ from common_func import *
 import threading
 from multi_thread_dbs import *
 
-OUTPUT_FILE = "/home/luanzengze/t_iou_list_history_out.sql"
+OUTPUT_FILE = "/home/t_iou_list_history_out.sql"
 INPUT_FILE0 = "t_iou_list_history000"
 INPUT_FILE1 = "t_iou_list_history001"
 INPUT_FILE2 = "t_iou_list_history002"
@@ -29,7 +29,7 @@ valid = "INSERT"
 mutex = threading.Lock()
 # 线程池
 threads = []
-seq_count = 192302
+seq_count = 198501
 
 # 定义线程类
 

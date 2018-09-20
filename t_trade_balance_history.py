@@ -16,7 +16,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, valid):
     # 维护自增id
-    seq_count = 6865757
+    seq_count = 6966555
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
             for line in fin:
@@ -96,7 +96,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.time()
 conver_file("t_trade_balance_history.sql",
-            "/home/luanzengze/t_trade_balance_history_out.sql", valid)
+            "/home/t_trade_balance_history_out.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

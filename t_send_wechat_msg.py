@@ -8,7 +8,7 @@ import os
 from common_func import *
 from multi_thread_dbs import *
 
-OUTPUT_FILE = "/home/luanzengze/user_wechat_msg_out.sql"
+OUTPUT_FILE = "/home/user_wechat_msg_out.sql"
 INPUT_FILE0 = "t_send_wechat_msg000"
 INPUT_FILE1 = "t_send_wechat_msg001"
 INPUT_FILE2 = "t_send_wechat_msg002"

@@ -10,7 +10,7 @@ import multi_thread_dbs
 import threading
 
 
-OUTPUT_FILE = "/home/luanzengze/t_trade_history_out.sql"
+OUTPUT_FILE = "/home/t_trade_history_out.sql"
 INPUT_FILE0 = "t_trade_history000"
 INPUT_FILE1 = "t_trade_history001"
 INPUT_FILE2 = "t_trade_history002"
@@ -41,7 +41,7 @@ mutex = threading.Lock()
 # 线程池
 threads = []
 # 维护自增id
-seq_count = 7290
+seq_count = 6704
 
 # 定义线程类
 
@@ -90,7 +90,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 # uid,c_user_id
                 out_arr[5] = input_arr[3]
                 out_arr[4] = mydb.fetch_from_salt(
-                        out_arr[5])
+                    out_arr[5])
                 # bank_account
                 out_arr[6] = input_arr[4]
                 # withdraw_type(int->bit)
@@ -101,7 +101,7 @@ def conver_file(input_file, output_file, valid, mydb):
                 # amount,fee_amount
                 out_arr[10] = float_char_to_int(input_arr[8])
                 out_arr[11] = float_char_to_int(input_arr[9])
-                #send_time, t_send_tm
+                # send_time, t_send_tm
                 out_arr[14] = input_arr[13]
                 out_arr[13] = datetime2int(out_arr[14])
                 # b_valid
@@ -118,9 +118,9 @@ def conver_file(input_file, output_file, valid, mydb):
                 # trade_status
                 if (out_arr[16] == "0" and out_arr[14] != "NULL" and
                         len(out_arr[14].strip("'")) > 0):
-                    if(out_arr[3]=="18" or out_arr[3] == "19"):
-    				    out_arr[12] = 1
-					else:
+                    if(out_arr[3] == "18" or out_arr[3] == "19"):
+                        out_arr[12] = 1
+                    else:
                         out_arr[12] = 2
                 elif (out_arr[16] == "1" and out_arr[15] == "1"):
                     out_arr[12] = 3

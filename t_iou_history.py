@@ -10,8 +10,8 @@ from common_func import *
 from multi_thread_dbs import *
 
 
-OUTPUT_FILE = "/home/luanzengze/loan_t_iou_history_out.sql"
-OUTPUT_JSON_FILE = "/home/luanzengze/t_iou_history_json.sql"
+OUTPUT_FILE = "/home/loan_t_iou_history_out.sql"
+OUTPUT_JSON_FILE = "/home/t_iou_history_json.sql"
 INPUT_FILE0 = "t_iou_history000"
 INPUT_FILE1 = "t_iou_history001"
 INPUT_FILE2 = "t_iou_history002"
@@ -36,7 +36,7 @@ mutex = threading.Lock()
 threads = []
 valid = "INSERT"
 # 维护自增id
-seq_count = 1055437
+seq_count = 1062861
 
 
 # 定义线程类

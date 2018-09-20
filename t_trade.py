@@ -59,7 +59,7 @@ def conver_file(input_file, output_file, valid):
                     # amount,fee_amount
                     out_arr[10] = float_char_to_int(input_arr[8])
                     out_arr[11] = float_char_to_int(input_arr[9])
-                    #send_time, t_send_tm
+                    # send_time, t_send_tm
                     out_arr[14] = input_arr[13]
                     out_arr[13] = datetime2int(out_arr[14])
                     # b_valid
@@ -76,9 +76,9 @@ def conver_file(input_file, output_file, valid):
                     # trade_status
                     if (out_arr[16] == "0" and out_arr[14] != "NULL" and
                             len(out_arr[14].strip("'")) > 0):
-						if(out_arr[3]=="18" or out_arr[3] == "19"):
+                        if(out_arr[3] == "18" or out_arr[3] == "19"):
                             out_arr[12] = 1
-						else:
+                        else:
                             out_arr[12] = 2
                     elif (out_arr[16] == "1" and out_arr[15] == "1"):
                         out_arr[12] = 3
@@ -104,7 +104,7 @@ def conver_file(input_file, output_file, valid):
 
 start_time = time.time()
 conver_file("t_trade.sql",
-            "/home/luanzengze/t_trade_out.sql", valid)
+            "/home/t_trade_out.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)

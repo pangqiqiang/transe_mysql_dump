@@ -28,7 +28,7 @@ valid = "INSERT"
 
 def conver_file(input_file, output_file, output_file2, valid):
     # 维护自增id
-    seq_count = 7602933
+    seq_count = 7696352
     #json_count = 0
     with open(input_file, 'r') as fin:
         with open(output_file, 'w') as fout:
@@ -161,7 +161,7 @@ def conver_file(input_file, output_file, output_file2, valid):
 
 start_time = time.time()
 conver_file("t_iou_ban.sql",
-            "/home/luanzengze/loan_t_iou_ban_out.sql", "/home/luanzengze/t_iou_ban_json.sql", valid)
+            "/home/loan_t_iou_ban_out.sql", "/home/t_iou_ban_json.sql", valid)
 end_time = time.time()
 time_elapse = (end_time - start_time)
 print("All documents complete!!!\nTime elapsed: %.3f sec" % time_elapse)
