@@ -6,6 +6,7 @@ import re
 from collections import deque
 import os
 import threading
+import csv
 
 SEP = os.linesep
 
@@ -16,6 +17,13 @@ def write_lines_in_file(filename, line):
         fobj.write(line + SEP)
     finally:
         fobj.close()
+
+def write_to_csv(filename, output_arr):
+    with  open(filename, "a") as out_csv:
+        csv_writer = csv.writer(out_csv, newline='', delimiter="\t", 
+                                doublequote=False,escapechar='\\', quotechar="'",
+                                strict=True)
+        csv_writer.writerow(output_arr)
 
 
 def get_from_map(map, item):
